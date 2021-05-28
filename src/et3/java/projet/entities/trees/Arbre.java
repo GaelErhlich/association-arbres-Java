@@ -16,7 +16,7 @@ public class Arbre {
   private int circonference;
   private float hauteur;
   private boolean estAdulte;
-  private boolean estRemarquable = false;
+  public boolean estRemarquable = false;
   private Date remarquableDate;
   private ArrayList<Visite> lVisites;
 
