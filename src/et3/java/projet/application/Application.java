@@ -107,21 +107,38 @@ public class Application {
 
                 case "information":
                 case "info":
-                    // TODO : Afficher les informations sur un arbre
+                    System.out.println("\nRentrez l'ID de l'arbre dont vous souhaitez connaître les informations :");
+                    commande = scanner.nextLine();
+                    try {
+                        long id = Long.parseLong(commande);
+                        Arbre arbre = municipalite.getArbre(id);
+                        if(arbre != null) {
+
+                            System.out.println(arbre.toLongString());
+                        }
+                        else {
+                            System.err.println("Aucun arbre n'a été trouvé avec l'identifiant "+id+".");
+                        }
+
+                    }catch (NumberFormatException e) {
+                        System.err.println("L'identifiant spécifié "+commande+" est invalide. " +
+                                "Seuls des nombres peuvent être des identifiants.");
+                    }
                     break;
 
 
 
 
                 case "liste":
-                    System.out.println("String vide ? "+ municipalite.getArbresStr());
+                    System.out.println("\nListe de tous les arbres connus par la municipalité:\n"
+                            +municipalite.getArbresStr());
                     break;
 
 
 
                 case "remarquables":
-                    System.out.println(municipalite.getArbresRemarquablesStr());
-                    // TODO : Consulter la liste des arbres remarquables
+                    System.out.println("\nListe de tous les arbres remarquables :\n"
+                            +municipalite.getArbresRemarquablesStr());
                     break;
 
 
@@ -267,6 +284,7 @@ public class Application {
                     "\nTapez :"
                             + "\n> programmer : Définir une visite"
                             + "\n> rapport : Ajouter un compte-rendu à une visite"
+                            + "\n> acquitter : Indiquer qu'un membre a été défrayé"
                             + "\n> retour : Retourner au menu principal"
             );
             commande = scanner.nextLine();
@@ -284,6 +302,13 @@ public class Application {
 
 
                 case "rapport":
+                    // TODO : Ajouter un compte-rendu à une visite
+                    break;
+
+
+
+
+                case "acquitter":
                     // TODO : Ajouter un compte-rendu à une visite
                     break;
 
