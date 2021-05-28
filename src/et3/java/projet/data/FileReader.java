@@ -1,7 +1,10 @@
 package et3.java.projet.data;
 
+import et3.java.projet.entities.trees.Arbre;
+
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,11 +13,14 @@ import java.util.List;
 
 public class FileReader 
 {
-	public static void getDataFromCSVFile(String csvFilePath)
+	public static ArrayList<Arbre> getDataFromCSVFile(String csvFilePath)
 	{
+		ArrayList<Arbre> arbres = new ArrayList<Arbre>();
+
         String line = "";
         String[] data = null;
         String separator = ";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+
         
         //Document data
         Integer idBase;
@@ -30,9 +36,9 @@ public class FileReader
         String varieteOuCultivar;
         Integer circonferenceEnCm;
         Integer hauteurEnM;
-        String stadeDeveloppement;
+        boolean estAdulte;
         Boolean remarquable;
-        Float[] geographicalPoint2D = new Float[2];
+        float[] geographicalPoint2D = new float[2];
         
         try (BufferedReader bufferedReader = Files.newBufferedReader(Paths.get(csvFilePath), StandardCharsets.ISO_8859_1)) 
         {
@@ -45,7 +51,7 @@ public class FileReader
         	if(data.length != 17)
         	{
         		System.out.println("[FileReader] The file at " + csvFilePath + " does not contain the right number of columns.");
-        		return;
+        		throw new IOException();
         	}
         	
         	int i = 1;
@@ -121,7 +127,11 @@ public class FileReader
 	        		}
                 	
                 	//Get the development state
-                	stadeDeveloppement = data[14];
+                	if(data[14].equals("Jeune (arbre)") )
+                		estAdulte = false;
+                	else
+                		estAdulte = true;
+
                 	
                 	//Get whether the tree is remarquable or not
                 	if(data[15].equals("OUI") || data[15].equals("oui"))
@@ -141,7 +151,7 @@ public class FileReader
 	        		}
 	        		catch (Exception exception)
 	        		{
-	        			geographicalPoint2D[0] = null;
+	        			geographicalPoint2D[0] = 0;
 	        		}
                 	try
 	        		{
@@ -149,10 +159,11 @@ public class FileReader
 	        		}
 	        		catch (Exception exception)
 	        		{
-	        			geographicalPoint2D[1] = null;
+	        			geographicalPoint2D[1] = 0;
 	        		}
                 
                 //TODO Do something with data
+				Arbre arbre = new Arbre(idBase, genre, espece, libelleFrancais, adresse, geographicalPoint2D, circonferenceEnCm, hauteurEnM, estAdulte);
                     
                 System.out.println(
                 		idBase + ";" +
@@ -168,7 +179,7 @@ public class FileReader
                 		varieteOuCultivar + ";" +
                 		circonferenceEnCm + ";" +
                 		hauteurEnM + ";" +
-                		stadeDeveloppement + ";" +
+                		estAdulte + ";" +
                 		remarquable + ";" +
                 		"(" + geographicalPoint2D[0] + "," + geographicalPoint2D[1] + ")");
             }
@@ -177,5 +188,7 @@ public class FileReader
         {
             System.err.println(exception);
         }
+
+        return arbres;
 	}
 }
