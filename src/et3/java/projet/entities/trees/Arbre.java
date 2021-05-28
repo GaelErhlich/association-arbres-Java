@@ -68,6 +68,7 @@ public class Arbre {
     this.circonference = circonference;
     this.hauteur = hauteur;
     this.estAdulte = estAdulte;
+    lVisites = new ArrayList<Visite>();
   }
 
   public void ajouterVisite(Visite visite) {
@@ -127,22 +128,38 @@ public class Arbre {
     return str.toString();
   }
 
-
-  
   public String toLongString() {
-    return "Arbre{" +
-            "id=" + id +
-            ", genre='" + genre + '\'' +
-            ", espece='" + espece + '\'' +
-            ", nomCommun='" + nomCommun + '\'' +
-            ", adresse='" + adresse + '\'' +
-            ", coordonnees=" + Arrays.toString(coordonnees) +
-            ", circonference=" + circonference +
-            ", hauteur=" + hauteur +
-            ", estAdulte=" + estAdulte +
-            ", estRemarquable=" + estRemarquable +
-            ", remarquableDate=" + remarquableDate +
-            ", lVisites=" + lVisites +
-            '}';
+    return (
+      "Arbre{" +
+      "id=" +
+      id +
+      ", genre='" +
+      genre +
+      '\'' +
+      ", espece='" +
+      espece +
+      '\'' +
+      ", nomCommun='" +
+      nomCommun +
+      '\'' +
+      ", adresse='" +
+      adresse +
+      '\'' +
+      ", coordonnees=" +
+      Arrays.toString(coordonnees) +
+      ", circonference=" +
+      circonference +
+      ", hauteur=" +
+      hauteur +
+      ", estAdulte=" +
+      estAdulte +
+      ", estRemarquable=" +
+      estRemarquable +
+      ", remarquableDate=" +
+      remarquableDate +
+      ", lVisites=" +
+      lVisites +
+      '}'
+    );
   }
 }
