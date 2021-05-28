@@ -37,6 +37,8 @@ public class Municipalite {
   }
 
   public void addArbre(Arbre arbre) {
+
+
     boolean estRemarquable = arbre.estRemarquable();
 
     if (estRemarquable) {
