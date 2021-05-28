@@ -23,7 +23,7 @@ public class FileReader
         String arrondissement;
         String complementAdresse;
         String adresse;
-        Integer idEmplacement;
+        String idEmplacement;
         String libelleFrancais;
         String genre;
         String espece;
@@ -86,14 +86,7 @@ public class FileReader
                 	adresse = data[6];
                 
                 	//Get the location ID
-                	try
-	        		{
-                		idEmplacement = Integer.parseInt(data[7]);
-	        		}
-	        		catch (Exception exception)
-	        		{
-	        			idEmplacement = null;
-	        		}
+					idEmplacement = data[7];
                 	
                 	//Get the French name
                 	libelleFrancais = data[8];
