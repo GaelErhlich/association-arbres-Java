@@ -83,7 +83,7 @@ public class Arbre {
     if (lVisites.size() > 0) {
       return lVisites.get(lVisites.size() - 1).getDate().getTime();
     }
-    return -1;
+    return 0;
   }
 
   public long getId() {

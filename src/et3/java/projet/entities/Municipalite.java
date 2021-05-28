@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 public class Municipalite {
 
+  private static long counter = 0;
   private TreeMap<Long, Arbre> arbresRemarquables;
   private Map<Long, Arbre> arbres;
 
@@ -37,12 +38,16 @@ public class Municipalite {
   }
 
   public void addArbre(Arbre arbre) {
-
-
     boolean estRemarquable = arbre.estRemarquable();
 
     if (estRemarquable) {
-      arbresRemarquables.put(arbre.getDerniereVisite(), arbre);
+      long derniereVisite = arbre.getDerniereVisite();
+
+      if (derniereVisite == 0) {
+        derniereVisite = Municipalite.counter;
+        Municipalite.counter -= 1;
+      }
+      arbresRemarquables.put(derniereVisite, arbre);
     }
 
     arbres.put(arbre.getId(), arbre);
