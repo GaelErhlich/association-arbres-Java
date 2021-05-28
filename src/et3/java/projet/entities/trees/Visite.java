@@ -10,13 +10,18 @@ public class Visite {
   private Date date;
   private long visiteur;
   private String compteRendu;
+  private boolean estDefrayee;
 
-  public Visite(long visiteur, Date date, String compteRendu) {
+  public Visite(long visiteur, Date date) {
     this.id = idAcc;
     this.date = date;
     this.visiteur = visiteur;
-    this.compteRendu = compteRendu;
     Visite.idAcc += 1;
+  }
+
+  public Visite(long visiteur, Date date, String compteRendu) {
+    this(visiteur, date);
+    this.compteRendu = compteRendu;
   }
 
   public Date getDate() {
