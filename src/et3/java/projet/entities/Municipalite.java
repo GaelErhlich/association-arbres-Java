@@ -44,5 +44,19 @@ public class Municipalite {
     arbres.remove(arbre.getId());
   }
 
-  public static void main(String[] args) {}
+  public String getArbresStr() {
+    return this.arbres.values()
+      .stream()
+      .map(arbre -> arbre.toString())
+      .reduce((curr, acc) -> acc + "\n" + curr)
+      .orElse("");
+  }
+
+  public String getArbresRemarquablesStr() {
+    return this.arbresRemarquables.values()
+      .stream()
+      .map(arbre -> arbre.toString())
+      .reduce((curr, acc) -> acc + "\n" + curr)
+      .orElse("");
+  }
 }

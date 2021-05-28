@@ -8,10 +8,10 @@ public class Visite {
   private static long idAcc = 0;
   private long id;
   private Date date;
-  private Membre visiteur;
+  private long visiteur;
   private String compteRendu;
 
-  public Visite(Membre visiteur, Date date, String compteRendu) {
+  public Visite(long visiteur, Date date, String compteRendu) {
     this.id = idAcc;
     this.date = date;
     this.visiteur = visiteur;
@@ -25,9 +25,5 @@ public class Visite {
 
   public long getId() {
     return this.id;
-  }
-
-  public String getNomComplet() {
-    return this.visiteur.getNomComplet();
   }
 }

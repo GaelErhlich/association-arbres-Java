@@ -57,11 +57,10 @@ public class Association {
       .toArray()[0];
   }
 
-  public Visite[] searchVisite(String recherche) {
-    return (Visite[]) this.visites.stream()
-      .filter(visite -> visite.getNomComplet().startsWith(recherche))
-      .toArray();
+  public void retirerMembre(long id) {
+    Membre membre = (Membre) this.membres.stream()
+      .filter(m -> m.getId() == id)
+      .toArray()[0];
+    membre = null;
   }
-
-  public void retirerMembre(Membre membre) {}
 }
