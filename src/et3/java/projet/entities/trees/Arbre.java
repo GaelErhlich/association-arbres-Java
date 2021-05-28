@@ -19,6 +19,7 @@ public class Arbre {
   private ArrayList<Visite> lVisites;
 
   public Arbre(
+    long id,
     String genre,
     String espece,
     String nomCommun,
@@ -31,6 +32,7 @@ public class Arbre {
     Date remarquableDate
   ) {
     this(
+      id,
       genre,
       espece,
       nomCommun,
@@ -45,6 +47,7 @@ public class Arbre {
   }
 
   public Arbre(
+    long id,
     String genre,
     String espece,
     String nomCommun,
@@ -54,6 +57,7 @@ public class Arbre {
     float hauteur,
     boolean estAdulte
   ) {
+    this.id = id;
     this.genre = genre;
     this.espece = espece;
     this.nomCommun = nomCommun;
