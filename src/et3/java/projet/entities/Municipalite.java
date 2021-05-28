@@ -1,6 +1,7 @@
 package et3.java.projet.entities;
 
 import et3.java.projet.entities.trees.Arbre;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -20,11 +21,20 @@ public class Municipalite {
   }
 
   public Arbre[] getArbresRemarquables() {
-    return (Arbre[]) this.arbresRemarquables.values().toArray();
+    Object[] objArray = this.arbresRemarquables.values().toArray();
+    Arbre[] a = new Arbre[objArray.length];
+    System.arraycopy(objArray, 0, a, 0, objArray.length);
+    return a;
   }
 
   public Arbre[] getArbres() {
-    return (Arbre[]) this.arbres.values().toArray();
+    Object[] objArray = this.arbres.values().toArray();
+    Arbre[] a = new Arbre[objArray.length];
+    int i = 0;
+    for (Object o : objArray) {
+      a[i++] = (Arbre) o;
+    }
+    return a;
   }
 
   public void addArbre(Arbre arbre) {
