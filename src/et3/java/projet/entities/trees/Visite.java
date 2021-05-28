@@ -14,4 +14,8 @@ public class Visite {
     this.visiteur = visiteur;
     this.compteRendu = compteRendu;
   }
+
+  public Date getDate() {
+    return this.date;
+  }
 }
