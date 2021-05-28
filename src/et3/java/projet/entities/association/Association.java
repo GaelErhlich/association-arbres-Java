@@ -34,6 +34,19 @@ public class Association {
       .toArray();
   }
 
+  
+  public String getMembresStr() {
+    StringBuilder liste = new StringBuilder();
+
+    for(Membre membre : membres) {
+      liste.append(membre.toString()).append("\n");
+    }
+
+    return liste.toString();
+  }
+
+
+
   public Visite[] getVisites() {
     return (Visite[]) this.visites.toArray();
   }

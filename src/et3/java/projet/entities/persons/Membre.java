@@ -25,4 +25,25 @@ public class Membre extends Personne {
     this.dateDerniereCotisation = dateDerniereCotisation;
     this.anneePremiereCotisation = anneePremiereCotisation;
   }
+
+  @Override
+  public String toString() {
+    return "Membre{" +
+            "adresse='" + adresse + '\'' +
+            ", naissance=" + naissance +
+            ", visitesAnneeCourante=" + visitesAnneeCourante +
+            ", dateDerniereCotisation=" + dateDerniereCotisation +
+            ", anneePremiereCotisation=" + anneePremiereCotisation +
+            '}';
+  }
+
+  public String toLongString() {
+    return "Membre "+getNomComplet()+" :"
+            +"\n  Adresse : "+adresse
+            +"\n  Date de naissance : "+naissance
+            +"\n  Nombre de visites cette année : " + visitesAnneeCourante
+            +"\n  Date de dernière cotisation : " + dateDerniereCotisation
+            +"\n  Année de la 1ère cotisation : " + anneePremiereCotisation
+            +"\n}";
+  }
 }
