@@ -137,6 +137,7 @@ public class FileReader
                 	//Get whether the tree is remarquable or not
                 	if(data[15].equals("OUI") || data[15].equals("oui"))
                 	{
+                		System.out.println(idBase);
                 		remarquable = true;
                 	}
                 	else
@@ -165,7 +166,8 @@ public class FileReader
                 
                 //TODO Do something with data
 				arbres.add( new Arbre(idBase, genre, espece, libelleFrancais, adresse, geographicalPoint2D, circonferenceEnCm, hauteurEnM, estAdulte, remarquable, null) );
-                    
+
+                	/*
                 System.out.println(
                 		idBase + ";" +
                 		typeEmplacement + ";" +
@@ -182,7 +184,7 @@ public class FileReader
                 		hauteurEnM + ";" +
                 		estAdulte + ";" +
                 		remarquable + ";" +
-                		"(" + geographicalPoint2D[0] + "," + geographicalPoint2D[1] + ")");
+                		"(" + geographicalPoint2D[0] + "," + geographicalPoint2D[1] + ")");*/
             }
         } 
         catch (IOException exception) 
