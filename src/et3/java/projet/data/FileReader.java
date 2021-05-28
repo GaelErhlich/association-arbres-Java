@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FileReader 
@@ -163,7 +164,7 @@ public class FileReader
 	        		}
                 
                 //TODO Do something with data
-				Arbre arbre = new Arbre(idBase, genre, espece, libelleFrancais, adresse, geographicalPoint2D, circonferenceEnCm, hauteurEnM, estAdulte);
+				arbres.add( new Arbre(idBase, genre, espece, libelleFrancais, adresse, geographicalPoint2D, circonferenceEnCm, hauteurEnM, estAdulte, remarquable, null) );
                     
                 System.out.println(
                 		idBase + ";" +

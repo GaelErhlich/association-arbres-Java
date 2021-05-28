@@ -128,7 +128,7 @@ public class Arbre {
   }
 
 
-  
+
   public String toLongString() {
     return "Arbre{" +
             "id=" + id +

@@ -114,12 +114,13 @@ public class Application {
 
 
                 case "liste":
-                    // TODO : Afficher la liste des arbres
+                    System.out.println("String vide ? "+ municipalite.getArbresStr());
                     break;
 
 
 
                 case "remarquables":
+                    System.out.println(municipalite.getArbresRemarquablesStr());
                     // TODO : Consulter la liste des arbres remarquables
                     break;
 

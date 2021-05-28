@@ -13,6 +13,7 @@ public class Main
 	public static void main(String[] args) 
 	{
 		ArrayList<Arbre> arbres = chargeDatabase();
+		System.out.println(arbres.size());
 
 		Application app = new Application();
 		app.initialize(arbres);
