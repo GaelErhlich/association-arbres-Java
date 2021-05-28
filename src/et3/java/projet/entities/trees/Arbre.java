@@ -5,15 +5,16 @@ import java.util.Date;
 
 public class Arbre {
 
+  private long id;
   private String genre;
   private String espece;
   private String nomCommun;
   private String adresse;
-  private float coordonnees[]; // 2 coordonnnées GPS
+  private final float coordonnees[]; // 2 coordonnnées GPS
   private int circonference;
   private float hauteur;
   private boolean estAdulte;
-  private boolean estRemarquable;
+  private boolean estRemarquable = false;
   private Date remarquableDate;
   private ArrayList<Visite> lVisites;
 
@@ -22,8 +23,7 @@ public class Arbre {
     String espece,
     String nomCommun,
     String adresse,
-    float latitude,
-    float longitude,
+    float[] coordonnees,
     int circonference,
     float hauteur,
     boolean estAdulte,
@@ -35,8 +35,7 @@ public class Arbre {
       espece,
       nomCommun,
       adresse,
-      latitude,
-      longitude,
+      coordonnees,
       circonference,
       hauteur,
       estAdulte
@@ -50,8 +49,7 @@ public class Arbre {
     String espece,
     String nomCommun,
     String adresse,
-    float latitude,
-    float longitude,
+    float[] coordonnees,
     int circonference,
     float hauteur,
     boolean estAdulte
@@ -60,8 +58,7 @@ public class Arbre {
     this.espece = espece;
     this.nomCommun = nomCommun;
     this.adresse = adresse;
-    this.coordonnees[0] = latitude;
-    this.coordonnees[1] = longitude;
+    this.coordonnees = coordonnees;
     this.circonference = circonference;
     this.hauteur = hauteur;
     this.estAdulte = estAdulte;
@@ -69,5 +66,17 @@ public class Arbre {
 
   public void ajouterVisite(Visite visite) {
     lVisites.add(visite);
+  }
+
+  public boolean estRemarquable() {
+    return this.estRemarquable;
+  }
+
+  public long getDerniereVisite() {
+    return lVisites.get(lVisites.size() - 1).getDate().getTime();
+  }
+
+  public long getId() {
+    return this.id;
   }
 }
