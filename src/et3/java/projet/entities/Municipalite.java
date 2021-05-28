@@ -1,8 +1,13 @@
 package et3.java.projet.entities;
 
+import et3.java.projet.entities.persons.Membre;
+import et3.java.projet.entities.persons.Personne;
 import et3.java.projet.entities.trees.Arbre;
+import et3.java.projet.entities.trees.Visite;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class Municipalite {
@@ -55,7 +60,13 @@ public class Municipalite {
 
   public void removeArbre(Arbre arbre) {
     if (arbre.estRemarquable()) {
-      arbresRemarquables.remove(arbre.getDerniereVisite());
+      Long e = (Long) arbresRemarquables
+        .entrySet()
+        .stream()
+        .filter(a -> a.getValue().getId() == arbre.getId())
+        .map(a -> a.getKey())
+        .toArray()[0];
+      arbresRemarquables.remove(e);
     }
     arbres.remove(arbre.getId());
   }
@@ -74,5 +85,17 @@ public class Municipalite {
       .map(arbre -> arbre.toString())
       .reduce((curr, acc) -> acc + "\n" + curr)
       .orElse("");
+  }
+
+  public void progammerVisite(long idArbre, Date dateVisite, Membre membre) {
+    Visite newVisite = new Visite(membre.getId(), dateVisite);
+    Arbre aRem = (Arbre) this.arbresRemarquables.values()
+      .stream()
+      .filter(arbre -> arbre.getId() == idArbre)
+      .toArray()[0];
+
+    aRem.ajouterVisite(newVisite);
+    this.removeArbre(aRem);
+    this.addArbre(aRem);
   }
 }
