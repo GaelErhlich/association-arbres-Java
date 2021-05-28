@@ -1,6 +1,7 @@
 package et3.java.projet.entities.trees;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -124,5 +125,24 @@ public class Arbre {
       .append(")");
 
     return str.toString();
+  }
+
+
+  
+  public String toLongString() {
+    return "Arbre{" +
+            "id=" + id +
+            ", genre='" + genre + '\'' +
+            ", espece='" + espece + '\'' +
+            ", nomCommun='" + nomCommun + '\'' +
+            ", adresse='" + adresse + '\'' +
+            ", coordonnees=" + Arrays.toString(coordonnees) +
+            ", circonference=" + circonference +
+            ", hauteur=" + hauteur +
+            ", estAdulte=" + estAdulte +
+            ", estRemarquable=" + estRemarquable +
+            ", remarquableDate=" + remarquableDate +
+            ", lVisites=" + lVisites +
+            '}';
   }
 }
