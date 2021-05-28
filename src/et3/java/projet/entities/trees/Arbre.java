@@ -1,6 +1,7 @@
 package et3.java.projet.entities.trees;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Arbre {
@@ -77,10 +78,51 @@ public class Arbre {
   }
 
   public long getDerniereVisite() {
-    return lVisites.get(lVisites.size() - 1).getDate().getTime();
+    if (lVisites.size() > 0) {
+      return lVisites.get(lVisites.size() - 1).getDate().getTime();
+    }
+    return -1;
   }
 
   public long getId() {
     return this.id;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder str = new StringBuilder();
+    Calendar c = Calendar.getInstance();
+    Date derniereVisite = this.estRemarquable
+      ? new Date(this.getDerniereVisite())
+      : null;
+
+    if (this.estRemarquable) {
+      c.setTime(derniereVisite);
+    }
+
+    str
+      .append("Arbre#")
+      .append(id)
+      .append("(")
+      .append(nomCommun)
+      .append("/")
+      .append(espece)
+      .append("/")
+      .append(genre)
+      .append("|@")
+      .append(adresse)
+      .append(
+        estRemarquable
+          ? "|Dernière visite :" +
+          c.get(Calendar.DAY_OF_WEEK) +
+          "/" +
+          c.get(Calendar.MONTH) +
+          "/" +
+          c.get(Calendar.YEAR)
+          : ""
+      )
+      .append(")");
+
+    return str.toString();
   }
 }

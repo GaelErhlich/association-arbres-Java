@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class Membre extends Personne {
 
+  private static long idAcc = 0;
+  private long id;
   private String adresse;
   private Date naissance;
   private short visitesAnneeCourante;
@@ -24,5 +26,11 @@ public class Membre extends Personne {
     this.visitesAnneeCourante = visitesAnneeCourante;
     this.dateDerniereCotisation = dateDerniereCotisation;
     this.anneePremiereCotisation = anneePremiereCotisation;
+    this.id = idAcc;
+    Membre.idAcc += 1;
+  }
+
+  public long getId() {
+    return this.id;
   }
 }
