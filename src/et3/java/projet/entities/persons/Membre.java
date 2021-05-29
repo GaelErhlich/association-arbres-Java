@@ -35,13 +35,24 @@ public class Membre extends Personne {
     return this.id;
   }
 
+  public boolean estAJourDeCotisation() {
+    Calendar c = Calendar.getInstance();
+    int anneeCourante = c.get(Calendar.YEAR);
+
+    c.setTimeInMillis(dateDerniereCotisation);
+    return c.get(Calendar.YEAR) >= anneeCourante;
+  }
+
+
+
   @Override
   public String toString() {
     return "Membre#"+getId()+" { "
             + getNomComplet()
             +", " + adresse
             +", Visites (cette année) : " + visitesAnneeCourante
-            +", Arrivée : " + anneePremiereCotisation
+            +", Arrivée en " + anneePremiereCotisation
+            +", Cotisation : " + (estAJourDeCotisation() ? "À jour" : "Pas à jour")
             +" }";
   }
 
@@ -67,6 +78,7 @@ public class Membre extends Personne {
             +"\n  Date de naissance : "+dateNaiss.get(Calendar.DAY_OF_MONTH)+"/"+dateNaiss.get(Calendar.MONTH)+"/"+dateNaiss.get(Calendar.YEAR)
             +"\n  Nombre de visites cette année : " + visitesAnneeCourante
             +"\n  Date de dernière cotisation : " + dateCotisation
+            +"\n  Cotisation à jour : " + (estAJourDeCotisation() ? "Oui" : "Non")
             +"\n  Année de la 1ère cotisation : " + anneePremiereCotisation
             +"\n}";
   }
