@@ -135,7 +135,7 @@ public class Application {
 
 
                 case "liste":
-                    System.out.println("Chargement de la liste...");
+                    System.out.println("\nChargement de la liste...");
                     System.out.println("\nListe de tous les arbres connus par la municipalité:\n"
                             +municipalite.getArbresStr());
                     break;
@@ -233,13 +233,54 @@ public class Application {
 
 
                 case "liste":
+                    System.out.println("\nChargement de la liste des membres...");
+                    System.out.println("\nListe des membres :\n"
+                            +association.getMembresStr());
                     // TODO : Afficher la liste des membres
                     break;
 
 
 
                 case "ajouter":
-                    // TODO : Ajouter un membre
+                    try {
+                        System.out.println("Entrez le nom complet du nouveau membre :");
+                        String nom = scanner.nextLine();
+
+                        System.out.println("Entrez l'adresse du nouveau membre :");
+                        String adresse = scanner.nextLine();
+
+
+                        System.out.println("Saisie de la date de naissance. Tapez Entrée pour commencer...");
+                        scanner.nextLine();
+
+                        System.out.println("Indiquez le jour de naissance (17 pour 17 février 1975) :");
+                        commande = scanner.nextLine();
+                        int naissanceJour = Integer.parseInt(commande);
+
+                        System.out.println("Indiquez le mois de naissance (02 pour 17 février 1975) :");
+                        commande = scanner.nextLine();
+                        int naissanceMois = Integer.parseInt(commande);
+
+                        System.out.println("Indiquez l'année de naissance (1975 pour 17 février 1975) :");
+                        commande = scanner.nextLine();
+                        int naissanceAnnee = Integer.parseInt(commande);
+
+                        Calendar c = Calendar.getInstance();
+                        short anneeCourante = (short) c.get(Calendar.YEAR);
+                        c.set(naissanceAnnee, naissanceMois, naissanceJour);
+
+
+                        Membre membre = new Membre(nom, c.getTimeInMillis(), adresse, 0l, anneeCourante, (short)0 );
+                        association.ajouterMembre(membre);
+                        System.out.println("Membre ajouté avec succès.\n"
+                                +membre.toLongString());
+
+                    }
+                    catch (NumberFormatException e) {
+                        System.err.println("Vous n'avez pas donné une valeur du bon format. Un nombre était attendu.");
+                    }
+
+
                     break;
 
 
@@ -368,7 +409,8 @@ public class Application {
                         Calendar c = Calendar.getInstance();
                         c.set(annee, mois, jour, heures, minutes);
 
-                        Visite visite = new Visite(1, c.getTimeInMillis() );
+                        Visite visite = new Visite(membre.getId(), c.getTimeInMillis() );
+                        arbre.ajouterVisite(visite, association);
 
                         System.out.println("Visite ajoutée :\n"
                                 +visite.toString() );

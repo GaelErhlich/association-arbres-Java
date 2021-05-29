@@ -11,7 +11,7 @@ public class Visite {
   private long id;
   private long date;
   private long visiteur;
-  private String compteRendu;
+  private String compteRendu = "";
   private boolean estDefrayee;
 
   public Visite(long visiteur, long date) {
@@ -49,9 +49,10 @@ public class Visite {
     dateC.setTimeInMillis(this.getDate());
 
     return "Visite#"+id+
-            "\n  Date : " + dateC.toString() +
+            "\n  Date : " + dateC.get(Calendar.DAY_OF_MONTH)+"/"+dateC.get(Calendar.MONTH)+"/"+dateC.get(Calendar.YEAR)+
+                    " - "+dateC.get(Calendar.HOUR)+"h"+dateC.get(Calendar.MINUTE)+
             "\n  Visiteur : " + visiteur +
-            "\n  Compte-rendu : " + compteRendu +
+            "\n  Compte-rendu : " + ( compteRendu.length()==0 ? "Non-remis" : compteRendu) +
             "\n  Défrayé : " + (estDefrayee ? "Oui" : "Non") +
             '\n';
   }

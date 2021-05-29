@@ -1,5 +1,6 @@
 package et3.java.projet.entities.persons;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Membre extends Personne {
@@ -36,21 +37,36 @@ public class Membre extends Personne {
 
   @Override
   public String toString() {
-    return "Membre{" +
-            "adresse='" + adresse + '\'' +
-            ", naissance=" + naissance +
-            ", visitesAnneeCourante=" + visitesAnneeCourante +
-            ", dateDerniereCotisation=" + dateDerniereCotisation +
-            ", anneePremiereCotisation=" + anneePremiereCotisation +
-            '}';
+    return "Membre#"+getId()+" { "
+            + getNomComplet()
+            +", " + adresse
+            +", Visites (cette année) : " + visitesAnneeCourante
+            +", Arrivée : " + anneePremiereCotisation
+            +" }";
   }
 
+
+
   public String toLongString() {
-    return "Membre "+getNomComplet()+" :"
+
+    Calendar dateNaiss = Calendar.getInstance();
+    dateNaiss.setTimeInMillis(naissance);
+
+    String dateCotisation;
+    if(dateDerniereCotisation == 0) {
+      dateCotisation = "Jamais";
+    }
+    else {
+      Calendar dateCotis = Calendar.getInstance();
+      dateCotis.setTimeInMillis(dateDerniereCotisation);
+      dateCotisation = dateCotis.get(Calendar.DAY_OF_MONTH)+"/"+dateCotis.get(Calendar.MONTH)+"/"+dateCotis.get(Calendar.YEAR);
+    }
+
+    return "Membre "+getNomComplet()+"#"+getId()+" :"
             +"\n  Adresse : "+adresse
-            +"\n  Date de naissance : "+naissance
+            +"\n  Date de naissance : "+dateNaiss.get(Calendar.DAY_OF_MONTH)+"/"+dateNaiss.get(Calendar.MONTH)+"/"+dateNaiss.get(Calendar.YEAR)
             +"\n  Nombre de visites cette année : " + visitesAnneeCourante
-            +"\n  Date de dernière cotisation : " + dateDerniereCotisation
+            +"\n  Date de dernière cotisation : " + dateCotisation
             +"\n  Année de la 1ère cotisation : " + anneePremiereCotisation
             +"\n}";
   }
