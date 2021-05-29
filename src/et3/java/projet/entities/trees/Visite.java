@@ -1,30 +1,32 @@
 package et3.java.projet.entities.trees;
 
 import et3.java.projet.entities.persons.Membre;
+
+import java.util.Calendar;
 import java.util.Date;
 
 public class Visite {
 
   private static long idAcc = 0;
   private long id;
-  private Date date;
+  private long date;
   private long visiteur;
   private String compteRendu;
   private boolean estDefrayee;
 
-  public Visite(long visiteur, Date date) {
+  public Visite(long visiteur, long date) {
     this.id = idAcc;
     this.date = date;
     this.visiteur = visiteur;
     Visite.idAcc += 1;
   }
 
-  public Visite(long visiteur, Date date, String compteRendu) {
+  public Visite(long visiteur, long date, String compteRendu) {
     this(visiteur, date);
     this.compteRendu = compteRendu;
   }
 
-  public Date getDate() {
+  public long getDate() {
     return this.date;
   }
 
@@ -43,8 +45,11 @@ public class Visite {
 
   @Override
   public String toString() {
+    Calendar dateC = Calendar.getInstance();
+    dateC.setTimeInMillis(this.getDate());
+
     return "Visite#"+id+
-            "\n  Date : " + date.toString() +
+            "\n  Date : " + dateC.toString() +
             "\n  Visiteur : " + visiteur +
             "\n  Compte-rendu : " + compteRendu +
             "\n  Défrayé : " + (estDefrayee ? "Oui" : "Non") +

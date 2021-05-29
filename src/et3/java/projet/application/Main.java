@@ -11,6 +11,12 @@ public class Main {
   	public static void main(String[] args) {
     	ArrayList<Arbre> arbres = chargeDatabase(args[0]);
 
+
+
+
+
+
+
     	Application app = new Application();
     	app.initialize(arbres);
   	}

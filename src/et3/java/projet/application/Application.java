@@ -2,12 +2,15 @@ package et3.java.projet.application;
 
 import et3.java.projet.entities.Municipalite;
 import et3.java.projet.entities.association.Association;
+import et3.java.projet.entities.persons.Membre;
+import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
 import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
 import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 
 public class Application {
@@ -285,6 +288,7 @@ public class Application {
 
             System.out.println(
                     "\nTapez :"
+                            + "\n> information OU info : Consulter les informations relatives à une visite"
                             + "\n> programmer : Définir une visite"
                             + "\n> rapport : Ajouter un compte-rendu à une visite"
                             + "\n> acquitter : Indiquer qu'un membre a été défrayé"
@@ -295,10 +299,92 @@ public class Application {
             switch (commande.toLowerCase()) {
 
 
+                case "information":
+                case "info":
+                    System.out.println("Entrez l'identifiant de la visite à consulter :");
+                    commande = scanner.nextLine();
+
+                    try {
+                        long id = Long.parseLong(commande);
+                        Visite visite = association.getVisite(id);
+                        System.out.println(visite.toString());
+                        // TODO : Donner des informations sur visite
+                    }
+
+                    catch (NumberFormatException e) {
+                        System.err.println("Un identifiant ne peut contenir que des chiffres.");
+                    }
+                    catch (VisiteNotFoundException e) {
+                        System.err.println("L'identifiant de visite "+e.id+" n'a pas pu être trouvé dans l'association.");
+                    }
+                    break;
+
+
+
 
 
                 case "programmer":
-                    // TODO : Programmer une visite
+                    try {
+
+                        System.out.println("Renseignez l'identifiant de l'arbre à visiter :");
+                        commande = scanner.nextLine();
+                        long id = Long.parseLong(commande);
+                        Arbre arbre = municipalite.getArbre(id);
+                        if(arbre.estRemarquable()) {
+                            System.out.println("Arbre valide.");
+                        }else {
+                            System.err.println("L'arbre spécifié a été trouvé mais n'est pas un arbre remarquable.");
+                            break;
+                        }
+
+                        System.out.println("Donnez maintenant l'identifiant du membre effectuant la visite :");
+                        commande = scanner.nextLine();
+                        long mId = Long.parseLong(commande);
+                        Membre membre = association.getMembre(mId);
+                        System.out.println("Membre valide.");
+
+
+                        System.out.println("Quel jour du mois voulez-vous programmer la visite ?");
+                        commande = scanner.nextLine();
+                        int jour = Integer.parseInt(commande);
+
+                        System.out.println("Indiquez le numéro du mois :");
+                        commande = scanner.nextLine();
+                        int mois = Integer.parseInt(commande);
+
+                        System.out.println("Indiquez l'année de la visite :");
+                        commande = scanner.nextLine();
+                        int annee = Integer.parseInt(commande);
+
+                        System.out.println("Indiquez l'heure de la visite (14 pour 14:30, 11 pour 11:59) :");
+                        commande = scanner.nextLine();
+                        int heures = Integer.parseInt(commande);
+
+                        System.out.println("Complétez l'heure de la visite avec le nombre de minutes (30 pour 14:30, 0 pour 11:00) :");
+                        commande = scanner.nextLine();
+                        int minutes = Integer.parseInt(commande);
+
+
+                        Calendar c = Calendar.getInstance();
+                        c.set(annee, mois, jour, heures, minutes);
+
+                        Visite visite = new Visite(1, c.getTimeInMillis() );
+
+                        System.out.println("Visite ajoutée :\n"
+                                +visite.toString() );
+
+                        // TODO : Programmer une visite
+
+                    }
+                    catch (ArbreNotFoundException e) {
+                        System.err.println("Aucun arbre n'a été trouvé avec l'identifiant "+e.id+".");
+                    }
+                    catch (MembreNotFoundException e) {
+                        System.err.println("Aucun membre n'a été trouvé avec l'identifiant "+e.id+".");
+                    }
+                    catch (NumberFormatException e) {
+                        System.err.println("Vous n'avez pas donné une valeur du bon format. Un nombre était attendu.");
+                    }
                     break;
 
 

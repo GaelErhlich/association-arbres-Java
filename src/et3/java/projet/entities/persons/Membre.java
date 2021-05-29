@@ -7,16 +7,16 @@ public class Membre extends Personne {
   private static long idAcc = 0;
   private long id;
   private String adresse;
-  private Date naissance;
+  private long naissance;
   private short visitesAnneeCourante;
-  private Date dateDerniereCotisation;
+  private long dateDerniereCotisation;
   private short anneePremiereCotisation;
 
   public Membre(
     String nomComplet,
-    Date naissance,
+    long naissance,
     String adresse,
-    Date dateDerniereCotisation,
+    long dateDerniereCotisation,
     short anneePremiereCotisation,
     short visitesAnneeCourante
   ) {

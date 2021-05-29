@@ -1,5 +1,6 @@
 package et3.java.projet.entities;
 
+import et3.java.projet.entities.association.Association;
 import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.Personne;
 import et3.java.projet.entities.trees.Arbre;
@@ -97,14 +98,14 @@ public class Municipalite {
   }
 
 
-  public void progammerVisite(long idArbre, Date dateVisite, Membre membre) {
+  public void progammerVisite(long idArbre, long dateVisite, Membre membre, Association association) {
     Visite newVisite = new Visite(membre.getId(), dateVisite);
     Arbre aRem = (Arbre) this.arbresRemarquables.values()
       .stream()
       .filter(arbre -> arbre.getId() == idArbre)
       .toArray()[0];
 
-    aRem.ajouterVisite(newVisite);
+    aRem.ajouterVisite(newVisite, association);
     this.removeArbre(aRem);
     this.addArbre(aRem);
   }

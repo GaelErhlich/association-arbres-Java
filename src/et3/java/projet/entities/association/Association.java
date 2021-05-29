@@ -2,6 +2,7 @@ package et3.java.projet.entities.association;
 
 import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.Personne;
+import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Visite;
 import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
 import et3.java.projet.operations.Transaction;
@@ -36,6 +37,15 @@ public class Association {
       .toArray();
   }
 
+  public Membre getMembre(long id) throws MembreNotFoundException {
+    Object[] membresId = membres.stream().filter(membre -> membre.getId() == id).toArray();
+    if(membresId.length > 0) {
+      return (Membre) membresId[0];
+    }else{
+      throw new MembreNotFoundException(id);
+    }
+  }
+
   
   public String getMembresStr() {
     StringBuilder liste = new StringBuilder();
@@ -64,6 +74,16 @@ public class Association {
        throw new VisiteNotFoundException(id);
      }
   }
+
+  /**
+   * /!\ Ne pas appeler directement
+   * Ajoute une visite à la liste contenant toutes les visites
+   * @param visite
+   */
+  public void addVisiteListeComplete(Visite visite) {
+    visites.add(visite);
+  }
+
 
   public void retirerMembre(long id) {
     Membre membre = (Membre) this.membres.stream()

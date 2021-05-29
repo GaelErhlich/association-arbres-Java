@@ -4,13 +4,10 @@ import et3.java.projet.entities.trees.Arbre;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class FileReader 
 {
@@ -163,7 +160,7 @@ public class FileReader
 	        			geographicalPoint2D[1] = 0;
 	        		}
 
-				arbres.add( new Arbre(idBase, genre, espece, libelleFrancais, adresse, geographicalPoint2D, circonferenceEnCm, hauteurEnM, estAdulte, remarquable, null) );
+				arbres.add( new Arbre(idBase, genre, espece, libelleFrancais, adresse, geographicalPoint2D, circonferenceEnCm, hauteurEnM, estAdulte, remarquable, 0) );
 
                 	/*
                 System.out.println(

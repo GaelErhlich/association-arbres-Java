@@ -1,6 +1,7 @@
 package et3.java.projet.entities.trees;
 
 import et3.java.projet.entities.Municipalite;
+import et3.java.projet.entities.association.Association;
 import et3.java.projet.entities.trees.exceptions.ArbreDejaRemarquableException;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Arbre {
   private float hauteur;
   private boolean estAdulte;
   private boolean estRemarquable = false;
-  private Date remarquableDate;
+  private long remarquableDate;
   private ArrayList<Visite> lVisites;
 
   public Arbre(
@@ -34,7 +35,7 @@ public class Arbre {
     float hauteur,
     boolean estAdulte,
     boolean estRemarquable,
-    Date remarquableDate
+    long remarquableDate
   ) {
     this(
       id,
@@ -80,7 +81,7 @@ public class Arbre {
 
   public long getDerniereVisite() {
     if (lVisites.size() > 0) {
-      return lVisites.get(lVisites.size() - 1).getDate().getTime();
+      return lVisites.get(lVisites.size() - 1).getDate();
     }
     return 0;
   }
@@ -100,8 +101,11 @@ public class Arbre {
   }
 
 
-  public void ajouterVisite(Visite visite) {
+
+  public void ajouterVisite(Visite visite, Association association) {
     lVisites.add(visite);
+    association.addVisiteListeComplete(visite);
+    // TODO Ajouter à la liste des visites de l'assoc
   }
 
 
