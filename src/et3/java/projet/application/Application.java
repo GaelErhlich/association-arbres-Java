@@ -32,12 +32,14 @@ public class Application {
         while(!doitEteindre) {
 
             System.out.println(
-                    "\nTapez :"
-                            +"\n> arbres : Ajouter et gérer les arbres"
-                            +"\n> membres : Ajouter et gérer les adhérents"
-                            +"\n> visites : Gérer les visites sur des arbres"
-                            +"\n> comptabilité : Gérer les finances de l'association"
-                            +"\n> quitter : Fermer l'application"
+                    """
+
+                            Tapez :
+                            > arbres : Ajouter et gérer les arbres
+                            > membres : Ajouter et gérer les adhérents
+                            > visites : Gérer les visites sur des arbres
+                            > comptabilité : Gérer les finances de l'association
+                            > quitter : Fermer l'application"""
             );
             String commande = scanner.nextLine();
 
@@ -90,20 +92,22 @@ public class Application {
      */
     private void startArbresLoop() {
         Scanner scanner = new Scanner(System.in);
-        String commande = new String();
+        String commande;
         boolean doitEteindre = false;
 
         while(!doitEteindre) {
 
             System.out.println(
-                    "\nTapez :"
-                            + "\n> information OU info : Consulter les information sur un arbre"
-                            + "\n> liste : Consulter la liste des arbres de la ville"
-                            + "\n> remarquables : Afficher la liste des arbres remarquables (en partant du moins récemment visité)"
-                            + "\n> remarquer : Définit un arbre comme remarquable (d'après notification de la municipalité)"
-                            + "\n> ajouter : Ajouter un arbre à base de données (d'après notification de la municipalité)"
-                            + "\n> supprimer : Retirer un arbre de la base de données (d'après notification de la municipalité)"
-                            + "\n> retour : Retourner au menu principal"
+                    """
+
+                            Tapez :
+                            > information OU info : Consulter les information sur un arbre
+                            > liste : Consulter la liste des arbres de la ville
+                            > remarquables : Afficher la liste des arbres remarquables (en partant du moins récemment visité)
+                            > remarquer : Définit un arbre comme remarquable (d'après notification de la municipalité)
+                            > ajouter : Ajouter un arbre à base de données (d'après notification de la municipalité)
+                            > supprimer : Retirer un arbre de la base de données (d'après notification de la municipalité)
+                            > retour : Retourner au menu principal"""
             );
             commande = scanner.nextLine();
 
@@ -184,7 +188,7 @@ public class Application {
                             municipalite.getArbre(id); // Une erreur sera lancée seulement si l'arbre est déjà en mémoire.
                             System.err.println("Un arbre avec cet identifiant est déjà dans la base de données.");
                             break;
-                        }catch (ArbreNotFoundException e) { } // Si rien n'est trouvé, c'est normal et on continue.
+                        }catch (ArbreNotFoundException ignored) { } // Si rien n'est trouvé, c'est normal et on continue.
 
                         float[] coordonnees = new float[2];
                         System.out.println("Indiquez la LATITUDE de l'arbre (forme 12.3493621) :");
@@ -265,8 +269,6 @@ public class Application {
             System.out.println("\nTapez Entrée pour continuer.");
             scanner.nextLine();
         }
-        doitEteindre = false;
-        return;
     }
 
 
@@ -284,20 +286,22 @@ public class Application {
      */
     private void startMembresLoop() {
         Scanner scanner = new Scanner(System.in);
-        String commande = new String();
+        String commande;
         boolean doitEteindre = false;
 
         while(!doitEteindre) {
 
             System.out.println(
-                    "\nTapez :"
-                            + "\n> information OU info OU chercher : Consulter les informations sur un membre"
-                            + "\n> arbre : Ajouter un arbre à la liste de souhaits d'un membre"
-                            + "\n> liste : Consulter la liste des membres"
-                            + "\n> cotisé : Marquer un membre comme à jour de cotisation"
-                            + "\n> ajouter : Déclarer l'arrivée d'un nouveau membre"
-                            + "\n> exclure : Retirer un membre de l'association"
-                            + "\n> retour : Retourner au menu principal"
+                    """
+
+                            Tapez :
+                            > information OU info OU chercher : Consulter les informations sur un membre
+                            > arbre : Ajouter un arbre à la liste de souhaits d'un membre
+                            > liste : Consulter la liste des membres
+                            > cotisé : Marquer un membre comme à jour de cotisation
+                            > ajouter : Déclarer l'arrivée d'un nouveau membre
+                            > exclure : Retirer un membre de l'association
+                            > retour : Retourner au menu principal"""
             );
             commande = scanner.nextLine();
 
@@ -347,8 +351,6 @@ public class Application {
                         membre.ajouterSouhaitArbre( arbre.getId() );
                         System.out.println("Arbre ajouté à la liste avec succès.\nListe actuelle :\n"
                                 +membre.getArbresSouhaitesStr(municipalite) );
-
-                        // TODO : Ajouter un arbre aux souhaits d'un membre
 
 
                     }catch (NumberFormatException e) {
@@ -407,7 +409,7 @@ public class Application {
                         c.set(naissanceAnnee, naissanceMois, naissanceJour);
 
 
-                        Membre membre = new Membre(nom, c.getTimeInMillis(), adresse, 0l, anneeCourante, (short)0 );
+                        Membre membre = new Membre(nom, c.getTimeInMillis(), adresse, 0L, anneeCourante, (short)0 );
                         association.ajouterMembre(membre);
                         System.out.println("Membre ajouté avec succès.\n"
                                 +membre.toLongString());
@@ -438,8 +440,6 @@ public class Application {
             System.out.println("\nTapez Entrée pour continuer.");
             scanner.nextLine();
         }
-        doitEteindre = false;
-        return;
     }
 
 
@@ -459,18 +459,20 @@ public class Application {
      */
     private void startVisitesLoop() {
         Scanner scanner = new Scanner(System.in);
-        String commande = new String();
+        String commande;
         boolean doitEteindre = false;
 
         while(!doitEteindre) {
 
             System.out.println(
-                    "\nTapez :"
-                            + "\n> information OU info : Consulter les informations relatives à une visite"
-                            + "\n> programmer : Définir une visite"
-                            + "\n> rapport : Ajouter un compte-rendu à une visite"
-                            + "\n> acquitter : Indiquer qu'un membre a été défrayé"
-                            + "\n> retour : Retourner au menu principal"
+                    """
+
+                            Tapez :
+                            > information OU info : Consulter les informations relatives à une visite
+                            > programmer : Définir une visite
+                            > rapport : Ajouter un compte-rendu à une visite
+                            > acquitter : Indiquer qu'un membre a été défrayé
+                            > retour : Retourner au menu principal"""
             );
             commande = scanner.nextLine();
 
@@ -612,7 +614,6 @@ public class Application {
             System.out.println("\nTapez Entrée pour continuer.");
             scanner.nextLine();
         }
-        doitEteindre = false;
     }
 
 
@@ -631,18 +632,20 @@ public class Application {
     private void startComptabiliteLoop() {
 
         Scanner scanner = new Scanner(System.in);
-        String commande = new String();
+        String commande;
         boolean doitEteindre = false;
 
         while(!doitEteindre) {
 
             System.out.println(
-                    "\nTapez :"
-                            + "\n> transaction : Déclarer une rentrée ou une sortie d'argent"
-                            + "\n> donateur : Ajouter un donateur à la liste de l'association"
-                            + "\n> -donateur : Supprimer un donateur de la liste de l'association"
-                            + "\n> bilan : Afficher le bilan de l'exercice annuel, et possiblement le valider"
-                            + "\n> retour : Retourner au menu principal"
+                    """
+
+                            Tapez :
+                            > transaction : Déclarer une rentrée ou une sortie d'argent
+                            > donateur : Ajouter un donateur à la liste de l'association
+                            > -donateur : Supprimer un donateur de la liste de l'association
+                            > bilan : Afficher le bilan de l'exercice annuel, et possiblement le valider
+                            > retour : Retourner au menu principal"""
             );
             commande = scanner.nextLine();
 
@@ -693,8 +696,6 @@ public class Application {
             System.out.println("\nTapez Entrée pour continuer.");
             scanner.nextLine();
         }
-        doitEteindre = false;
-        return;
     }
 
 
