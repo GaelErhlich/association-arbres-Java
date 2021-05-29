@@ -148,6 +148,18 @@ public class Arbre {
   }
 
   public String toLongString() {
+
+    Calendar c = Calendar.getInstance();
+    c.setTimeInMillis(getDerniereVisite());
+    String derniereVisite = (estRemarquable
+            ? ", Dernière visite :" +
+            c.get(Calendar.DAY_OF_WEEK) +
+            "/" +
+            c.get(Calendar.MONTH) +
+            "/" +
+            c.get(Calendar.YEAR)
+            : "");
+
     return (
       "Arbre#"+getId()+"{" +
       "genre='" +
@@ -172,10 +184,9 @@ public class Arbre {
               (estAdulte ? "Adulte" : "Jeune" ) +
       ", " +
               (estRemarquable ? "Remarquable" : "Non-remarquable") +
-      ", remarquableDate=" +
-      remarquableDate +
-      ", lVisites=" +
-      lVisites +
+      derniereVisite +
+      ", Visites=" +
+      lVisites.size() +
       '}'
     );
   }

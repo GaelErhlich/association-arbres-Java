@@ -175,7 +175,58 @@ public class Application {
 
 
                 case "ajouter":
-                    // TODO : Ajouter un arbre
+                    try {
+
+                        System.out.println("Indiquez l'identifiant donné par la mairie pour l'arbre planté :");
+                        commande = scanner.nextLine();
+                        long id = Long.parseLong(commande);
+                        try {
+                            municipalite.getArbre(id); // Une erreur sera lancée seulement si l'arbre est déjà en mémoire.
+                            System.err.println("Un arbre avec cet identifiant est déjà dans la base de données.");
+                            break;
+                        }catch (ArbreNotFoundException e) { } // Si rien n'est trouvé, c'est normal et on continue.
+
+                        float[] coordonnees = new float[2];
+                        System.out.println("Indiquez la LATITUDE de l'arbre (forme 12.3493621) :");
+                        commande = scanner.nextLine();
+                        coordonnees[0] = Float.parseFloat(commande);
+                        System.out.println("Indiquez la LONGITUDE de l'arbre (forme 12.3493621) :");
+                        commande = scanner.nextLine();
+                        coordonnees[1] = Float.parseFloat(commande);
+
+                        System.out.println("Indiquez la hauteur de l'arbre (mètres, format 15.476) :");
+                        commande = scanner.nextLine();
+                        float hauteur = Float.parseFloat(commande);
+
+                        System.out.println("Indiquez la circonférence de l'arbre (centimètres, format 67 sans virgule) :");
+                        commande = scanner.nextLine();
+                        int circonference = Integer.parseInt(commande);
+
+                        System.out.println("Indiquez si l'arbre est adulte (OUI ou NON) :");
+                        commande = scanner.nextLine();
+                        boolean estAdulte = (commande.toUpperCase().equals("OUI"));
+
+                        System.out.println("Indiquez l'adresse où l'arbre se situe :");
+                        String adresse = scanner.nextLine();
+
+                        System.out.println("Indiquez le genre (en classification) de l'arbre (ex: Populus) :");
+                        String genre = scanner.nextLine();
+
+                        System.out.println("Indiquez l'espèce de l'arbre (ex: Nigra) :");
+                        String espece = scanner.nextLine();
+
+                        System.out.println("Indiquez le nom commun de l'arbre (ex: Peuplier) :");
+                        String nomCommun = scanner.nextLine();
+
+                        Arbre arbre = new Arbre(
+                                id, genre, espece, nomCommun, adresse, coordonnees, circonference, hauteur, estAdulte
+                        );
+                        municipalite.addArbre(arbre);
+                        System.out.println(arbre.toLongString());
+                    }
+                    catch (NumberFormatException e) {
+                        System.err.println("Un nombre était attendu ici. Vous n'avez pas donné une valeur au bon format.");
+                    }
                     break;
 
 
