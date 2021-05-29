@@ -95,8 +95,8 @@ public class Arbre {
     if(this.estRemarquable())
       throw new ArbreDejaRemarquableException(this);
 
-    this.estRemarquable = true;
     municipalite.removeArbre(this);
+    this.estRemarquable = true;
     municipalite.addArbre(this);
   }
 
@@ -149,10 +149,8 @@ public class Arbre {
 
   public String toLongString() {
     return (
-      "Arbre{" +
-      "id=" +
-      id +
-      ", genre='" +
+      "Arbre#"+getId()+"{" +
+      "genre='" +
       genre +
       '\'' +
       ", espece='" +
@@ -170,10 +168,10 @@ public class Arbre {
       circonference +
       ", hauteur=" +
       hauteur +
-      ", estAdulte=" +
-      estAdulte +
-      ", estRemarquable=" +
-      estRemarquable +
+      ", Maturité : " +
+              (estAdulte ? "Adulte" : "Jeune" ) +
+      ", " +
+              (estRemarquable ? "Remarquable" : "Non-remarquable") +
       ", remarquableDate=" +
       remarquableDate +
       ", lVisites=" +

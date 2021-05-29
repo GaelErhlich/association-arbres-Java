@@ -6,6 +6,7 @@ import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
+import et3.java.projet.entities.trees.exceptions.ArbreDejaRemarquableException;
 import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
 import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
 
@@ -150,7 +151,24 @@ public class Application {
 
 
                 case "remarquer":
-                    // TODO : Définir un arbre comme remarquable
+                    System.out.println("\nRentrez l'ID de l'arbre nouvellement déclaré comme remarquable par la municipalité :");
+                    commande = scanner.nextLine();
+                    try {
+                        long id = Long.parseLong(commande);
+                        Arbre arbre = municipalite.getArbre(id);
+                        arbre.rendreRemarquable(municipalite);
+                        System.out.println("L'arbre a été marqué comme remarquable avec succès.");
+                        System.out.println(arbre.toLongString());
+
+
+                    }catch (NumberFormatException e) {
+                        System.err.println("L'identifiant spécifié "+commande+" est invalide. " +
+                                "Seuls des nombres peuvent être des identifiants.");
+                    }catch (ArbreNotFoundException e) {
+                        System.err.println("Aucun arbre n'a été trouvé avec l'identifiant "+e.id+".");
+                    }catch (ArbreDejaRemarquableException e) {
+                        System.err.println("L'arbre "+e.arbre.getId()+" était déjà marqué comme remarquable.");
+                    }
                     break;
 
 
