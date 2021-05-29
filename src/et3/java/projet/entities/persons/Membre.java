@@ -1,7 +1,11 @@
 package et3.java.projet.entities.persons;
 
+import et3.java.projet.entities.Municipalite;
+import et3.java.projet.entities.trees.Arbre;
+import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
+
+import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 
 public class Membre extends Personne {
 
@@ -12,6 +16,7 @@ public class Membre extends Personne {
   private short visitesAnneeCourante;
   private long dateDerniereCotisation;
   private short anneePremiereCotisation;
+  private Long[] arbresSouhaites = new Long[5];
 
   public Membre(
     String nomComplet,
@@ -41,6 +46,48 @@ public class Membre extends Personne {
 
     c.setTimeInMillis(dateDerniereCotisation);
     return c.get(Calendar.YEAR) >= anneeCourante;
+  }
+
+
+
+  public String getArbresSouhaitesStr(Municipalite municipalite) {
+    StringBuilder stringBuilder = new StringBuilder();
+
+    for(int i=0; i<arbresSouhaites.length; i++) {
+
+      if(arbresSouhaites[i] != null) { // On vérifie que l'arbre existe toujours. Si oui, on l'ajoute au stringBuilder.
+        try {
+          municipalite.getArbre( arbresSouhaites[i] );
+          stringBuilder.append( arbresSouhaites[i].toString() + "\n" );
+        }catch (ArbreNotFoundException e) { // Si non, on le met à null directement.
+          arbresSouhaites[i] = null;
+        }
+      }
+
+      if(arbresSouhaites[i] == null) { // Si pas de valeur (null), on indique un emplacement libre.
+        stringBuilder.append("1 emplacement libre\n");
+      }
+    }
+
+    return stringBuilder.toString();
+  }
+
+
+  public void ajouterSouhaitArbre(long id) {
+
+    short i = 0;
+    while(i<5 && arbresSouhaites[i] != null) { // On cherche la 1ère case libre du tableau.
+      i++;
+    }
+
+    if(i == 5) { // Si on n'en a pas trouvé, on libère la dernière place.
+      for(int k=0; k<4; k++) {
+        arbresSouhaites[k] = arbresSouhaites[k+1];
+      }
+      i = 4; // On indique que la 1ère case libre est la dernière.
+    }
+
+    arbresSouhaites[i] = id;
   }
 
 

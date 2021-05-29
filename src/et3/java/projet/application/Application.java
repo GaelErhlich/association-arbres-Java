@@ -332,7 +332,33 @@ public class Application {
 
 
                 case "arbre":
-                    // TODO : Ajouter un arbre aux souhaits d'un membre
+                    try {
+
+                        System.out.println("Indiquez l'identifiant du membre voulant ajouter un arbre à sa liste de souhaits :");
+                        commande = scanner.nextLine();
+                        long idMembre = Long.parseLong(commande);
+                        Membre membre = association.getMembre(idMembre);
+
+                        System.out.println("Indiquez l'identifiant de l'arbre à ajouter :");
+                        commande = scanner.nextLine();
+                        long idArbre = Long.parseLong(commande);
+                        Arbre arbre = municipalite.getArbre(idArbre);
+
+                        membre.ajouterSouhaitArbre( arbre.getId() );
+                        System.out.println("Arbre ajouté à la liste avec succès.\nListe actuelle :\n"
+                                +membre.getArbresSouhaitesStr(municipalite) );
+
+                        // TODO : Ajouter un arbre aux souhaits d'un membre
+
+
+                    }catch (NumberFormatException e) {
+                        System.err.println("L'identifiant spécifié "+commande+" est invalide. " +
+                                "Seuls des nombres peuvent être des identifiants.");
+                    }catch (MembreNotFoundException e) {
+                        System.err.println("Aucun membre n'a été trouvé avec l'identifiant "+e.id+".");
+                    }catch (ArbreNotFoundException e) {
+                        System.err.println("Aucun arbre n'a été trouvé avec l'identifiant "+e.id+".");
+                    }
                     break;
 
 
@@ -341,7 +367,6 @@ public class Application {
                     System.out.println("\nChargement de la liste des membres...");
                     System.out.println("\nListe des membres :\n"
                             +association.getMembresStr());
-                    // TODO : Afficher la liste des membres
                     break;
 
 
