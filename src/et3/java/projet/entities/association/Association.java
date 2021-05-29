@@ -3,6 +3,7 @@ package et3.java.projet.entities.association;
 import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.Personne;
 import et3.java.projet.entities.trees.Visite;
+import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
 import et3.java.projet.operations.Transaction;
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class Association {
     transactions = new ArrayList<Transaction>();
     donateurs = new ArrayList<Personne>();
     membres = new ArrayList<Membre>();
+    visites = new ArrayList<Visite>();
   }
 
   public void ajouterMembre(Membre membre) {
@@ -51,10 +53,16 @@ public class Association {
     return (Visite[]) this.visites.toArray();
   }
 
-  public Visite getVisite(long id) {
-    return (Visite) this.visites.stream()
+  public Visite getVisite(long id) throws VisiteNotFoundException {
+     Object[] visitesWithId = this.visites.stream()
       .filter(visite -> visite.getId() == id)
-      .toArray()[0];
+      .toArray();
+
+     if(visitesWithId.length > 0) {
+       return (Visite) visitesWithId[0];
+     }else{
+       throw new VisiteNotFoundException(id);
+     }
   }
 
   public void retirerMembre(long id) {

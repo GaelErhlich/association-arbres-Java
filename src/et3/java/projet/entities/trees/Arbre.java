@@ -1,5 +1,8 @@
 package et3.java.projet.entities.trees;
 
+import et3.java.projet.entities.Municipalite;
+import et3.java.projet.entities.trees.exceptions.ArbreDejaRemarquableException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -71,10 +74,6 @@ public class Arbre {
     lVisites = new ArrayList<Visite>();
   }
 
-  public void ajouterVisite(Visite visite) {
-    lVisites.add(visite);
-  }
-
   public boolean estRemarquable() {
     return this.estRemarquable;
   }
@@ -89,6 +88,22 @@ public class Arbre {
   public long getId() {
     return this.id;
   }
+
+
+  public void rendreRemarquable(Municipalite municipalite) throws ArbreDejaRemarquableException {
+    if(this.estRemarquable())
+      throw new ArbreDejaRemarquableException(this);
+
+    this.estRemarquable = true;
+    municipalite.removeArbre(this);
+    municipalite.addArbre(this);
+  }
+
+
+  public void ajouterVisite(Visite visite) {
+    lVisites.add(visite);
+  }
+
 
   @Override
   public String toString() {

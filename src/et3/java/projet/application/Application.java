@@ -3,6 +3,9 @@ package et3.java.projet.application;
 import et3.java.projet.entities.Municipalite;
 import et3.java.projet.entities.association.Association;
 import et3.java.projet.entities.trees.Arbre;
+import et3.java.projet.entities.trees.Visite;
+import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
+import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -111,12 +114,11 @@ public class Application {
                     commande = scanner.nextLine();
                     try {
                         long id = Long.parseLong(commande);
-                        Arbre arbre = municipalite.getArbre(id);
-                        if(arbre != null) {
-
+                        try {
+                            Arbre arbre = municipalite.getArbre(id);
                             System.out.println(arbre.toLongString());
                         }
-                        else {
+                        catch (ArbreNotFoundException e) {
                             System.err.println("Aucun arbre n'a été trouvé avec l'identifiant "+id+".");
                         }
 
@@ -130,6 +132,7 @@ public class Application {
 
 
                 case "liste":
+                    System.out.println("Chargement de la liste...");
                     System.out.println("\nListe de tous les arbres connus par la municipalité:\n"
                             +municipalite.getArbresStr());
                     break;
@@ -302,7 +305,25 @@ public class Application {
 
 
                 case "rapport":
-                    // TODO : Ajouter un compte-rendu à une visite
+                    System.out.println("Indiquez l'identifiant de la visite à laquelle le compte-rendu sera ajouté :");
+                    commande = scanner.nextLine();
+                    try {
+                        long id = Long.parseLong(commande);
+                        Visite visite = association.getVisite(id);
+                        System.out.println("Entrez le compte-rendu complet :");
+                        commande = scanner.nextLine();
+                        visite.setCompteRendu(commande);
+                        System.out.println("\nLe compte-rendu a bien été enregistré.\n"
+                                + visite.toString());
+                        // TODO : Ajouter un compte-rendu à une visite
+                    }
+
+                    catch (NumberFormatException e) {
+                        System.err.println("Un identifiant ne peut contenir que des chiffres.");
+                    }
+                    catch (VisiteNotFoundException e) {
+                        System.err.println("L'identifiant de visite "+e.id+" n'a pas pu être trouvé dans l'association.");
+                    }
                     break;
 
 

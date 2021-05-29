@@ -31,4 +31,23 @@ public class Visite {
   public long getId() {
     return this.id;
   }
+
+  public String getCompteRendu() {
+    return compteRendu;
+  }
+
+  public void setCompteRendu(String compteRendu) {
+    this.compteRendu = compteRendu;
+  }
+
+
+  @Override
+  public String toString() {
+    return "Visite#"+id+
+            "\n  Date : " + date.toString() +
+            "\n  Visiteur : " + visiteur +
+            "\n  Compte-rendu : " + compteRendu +
+            "\n  Défrayé : " + (estDefrayee ? "Oui" : "Non") +
+            '\n';
+  }
 }

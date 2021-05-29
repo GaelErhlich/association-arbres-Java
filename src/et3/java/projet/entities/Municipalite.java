@@ -4,11 +4,10 @@ import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.Personne;
 import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
+
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 public class Municipalite {
 
@@ -21,8 +20,18 @@ public class Municipalite {
     arbres = new HashMap<Long, Arbre>();
   }
 
-  public Arbre getArbre(long id) {
-    return this.arbres.get(id);
+
+  public boolean estArbreDansListeRemarquable(long id) { // TODO en construction
+    return Arrays.stream(getArbresRemarquables()).anyMatch(arbre -> arbre.getId() == id);
+  }
+
+
+  public Arbre getArbre(long id) throws ArbreNotFoundException {
+    Arbre arbre = this.arbres.get(id);
+    if(arbre == null) {
+      throw new ArbreNotFoundException(id);
+    }
+    return arbre;
   }
 
   public Arbre[] getArbresRemarquables() {
@@ -86,6 +95,7 @@ public class Municipalite {
       .reduce((curr, acc) -> acc + "\n" + curr)
       .orElse("");
   }
+
 
   public void progammerVisite(long idArbre, Date dateVisite, Membre membre) {
     Visite newVisite = new Visite(membre.getId(), dateVisite);

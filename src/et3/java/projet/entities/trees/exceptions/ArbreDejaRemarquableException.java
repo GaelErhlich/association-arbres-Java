@@ -1,2 +1,14 @@
-package et3.java.projet.entities.trees.exceptions;public class ArbreDejaRemarquableException {
+package et3.java.projet.entities.trees.exceptions;
+
+import et3.java.projet.entities.trees.Arbre;
+
+public class ArbreDejaRemarquableException extends Exception {
+
+    public Arbre arbre;
+
+    public ArbreDejaRemarquableException(Arbre arbre) {
+        super("L'arbre "+arbre.getId()+" est déjà remarquable.");
+        this.arbre = arbre;
+    }
+
 }
