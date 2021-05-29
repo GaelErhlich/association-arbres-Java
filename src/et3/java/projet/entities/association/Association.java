@@ -31,10 +31,17 @@ public class Association {
   }
 
   public Membre[] chercherMembre(String recherche) {
-    return (Membre[]) membres
+      Object[] membresObj = membres
       .stream()
-      .filter(membre -> membre.getNomComplet().startsWith(recherche))
+      .filter(membre -> membre.getNomComplet().toLowerCase().startsWith(recherche.toLowerCase()))
       .toArray();
+
+      Membre[] membresArr = new Membre[ membresObj.length ];
+      for(int i=0; i<membresObj.length; i++) {
+        membresArr[i] = (Membre) membresObj[i];
+      }
+
+      return membresArr;
   }
 
   public Membre getMembre(long id) throws MembreNotFoundException {

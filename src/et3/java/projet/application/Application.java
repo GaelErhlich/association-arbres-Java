@@ -276,9 +276,10 @@ public class Application {
 
             System.out.println(
                     "\nTapez :"
-                            + "\n> information OU info : Consulter les informations sur un membre"
+                            + "\n> information OU info OU chercher : Consulter les informations sur un membre"
                             + "\n> arbre : Ajouter un arbre à la liste de souhaits d'un membre"
                             + "\n> liste : Consulter la liste des membres"
+                            + "\n> cotisé : Marquer un membre comme à jour de cotisation"
                             + "\n> ajouter : Déclarer l'arrivée d'un nouveau membre"
                             + "\n> exclure : Retirer un membre de l'association"
                             + "\n> retour : Retourner au menu principal"
@@ -290,7 +291,27 @@ public class Application {
 
                 case "information":
                 case "info":
-                    // TODO : Afficher des informations sur un membre
+                case "chercher":
+                    try {
+                        System.out.println("Indiquez le nom complet ou le début du nom complet du membre recherché :");
+                        Membre[] membres = association.chercherMembre( scanner.nextLine() );
+                        if(membres.length == 0) {
+                            System.err.println("Aucun membre correspondant n'a pu être trouvé, avec ce début de nom.");
+                            break;
+                        }
+                        else if(membres.length == 1) {
+                            System.out.println("Une personne trouvée :\n"
+                                    +membres[0].toLongString());
+                        }
+                        else {
+                            System.out.println("Plusieurs résultats obtenus :");
+                            for(Membre membre : membres) {
+                                System.out.println(membre.toString());
+                            }
+                        }
+                    } catch (NumberFormatException e) {
+                        System.err.println("Vous n'avez pas donné une valeur du bon format. Un nombre était attendu.");
+                    }
                     break;
 
 
@@ -306,6 +327,13 @@ public class Application {
                     System.out.println("\nListe des membres :\n"
                             +association.getMembresStr());
                     // TODO : Afficher la liste des membres
+                    break;
+
+
+
+
+                case "cotisé":
+                    // TODO : Mettre à jour de cotisation
                     break;
 
 
