@@ -233,7 +233,22 @@ public class Application {
 
 
                 case "supprimer":
-                    // TODO : Retirer un arbre de la liste
+                    System.out.println("\nRentrez l'ID de l'arbre à supprimer :");
+                    commande = scanner.nextLine();
+                    try {
+                        long id = Long.parseLong(commande);
+                        Arbre arbre = municipalite.getArbre(id);
+                        System.out.println("Arbre supprimé :\n" +arbre.toString());
+                        municipalite.removeArbre(arbre);
+                        System.out.println("Suppression réussie.");
+
+                    }catch (NumberFormatException e) {
+                        System.err.println("L'identifiant spécifié "+commande+" est invalide. " +
+                                "Seuls des nombres peuvent être des identifiants.");
+                    }
+                    catch (ArbreNotFoundException e) {
+                        System.err.println("Aucun arbre n'a été trouvé avec l'identifiant "+e.id+".");
+                    }
                     break;
 
 
@@ -599,6 +614,8 @@ public class Application {
             System.out.println(
                     "\nTapez :"
                             + "\n> transaction : Déclarer une rentrée ou une sortie d'argent"
+                            + "\n> donateur : Ajouter un donateur à la liste de l'association"
+                            + "\n> -donateur : Supprimer un donateur de la liste de l'association"
                             + "\n> bilan : Afficher le bilan de l'exercice annuel, et possiblement le valider"
                             + "\n> retour : Retourner au menu principal"
             );
@@ -612,6 +629,23 @@ public class Application {
                 case "transaction":
                     // TODO : Ajouter une ligne à la comptabilité de l'association
                     break;
+
+
+
+
+
+                case "donateur":
+                    // TODO : Ajouter un donateur à la liste
+                    break;
+
+
+
+
+
+                case "-donateur":
+                    // TODO : Supprimer un donateur de la liste
+                    break;
+
 
 
 
