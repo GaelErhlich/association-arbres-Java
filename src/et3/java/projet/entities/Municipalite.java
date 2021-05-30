@@ -19,17 +19,23 @@ public class Municipalite extends Personne {
   private TreeMap<Long, Arbre> arbresRemarquables;
   private Map<Long, Arbre> arbres;
 
+  /**
+   * Constructeur par défaut
+   * @param nom Nom de la municipalité
+   * @param adresse Adresse du siège de la municipalité
+   */
   public Municipalite(String nom, String adresse) {
     super(nom, adresse);
     arbresRemarquables = new TreeMap<Long, Arbre>();
     arbres = new HashMap<Long, Arbre>();
   }
 
-  /*
-  public boolean estArbreDansListeRemarquable(long id) { // TODO en construction
-    return Arrays.stream(getArbresRemarquables()).anyMatch(arbre -> arbre.getId() == id); // TODO Peut-être à supprimer en fait ?
-  }*/
-
+  /**
+   * Donne un arbre de la municipalité à partir de son identifiant
+   * @param id identifiant
+   * @return l'arbre recherché
+   * @throws ArbreNotFoundException si l'arbre n'est pas la liste de la commune
+   */
   public Arbre getArbre(long id) throws ArbreNotFoundException {
     Arbre arbre = this.arbres.get(id);
     if (arbre == null) {
@@ -38,6 +44,10 @@ public class Municipalite extends Personne {
     return arbre;
   }
 
+  /**
+   * Donne un tableau contenant tous les arbres remarquables de la municipalité
+   * @return tableau d'Arbres
+   */
   public Arbre[] getArbresRemarquables() {
     Object[] objArray = this.arbresRemarquables.values().toArray();
     Arbre[] a = new Arbre[objArray.length];
@@ -45,6 +55,10 @@ public class Municipalite extends Personne {
     return a;
   }
 
+  /**
+   * Donne la liste des arbres de la municipalité
+   * @return un tableau d'Arbres
+   */
   public Arbre[] getArbres() {
     Object[] objArray = this.arbres.values().toArray();
     Arbre[] a = new Arbre[objArray.length];
@@ -55,6 +69,10 @@ public class Municipalite extends Personne {
     return a;
   }
 
+  /**
+   * Ajouter un arbre à la liste de la municipalité
+   * @param arbre l'Arbre à ajouter
+   */
   public void addArbre(Arbre arbre) {
     boolean estRemarquable = arbre.estRemarquable();
 
@@ -71,6 +89,10 @@ public class Municipalite extends Personne {
     arbres.put(arbre.getId(), arbre);
   }
 
+  /**
+   * Retirer un arbre de la liste de la municipalité (à la mort de celui-ci)
+   * @param arbre l'Arbre à supprimer
+   */
   public void removeArbre(Arbre arbre) {
     if (arbre.estRemarquable()) {
       Long e = (Long) arbresRemarquables
@@ -84,6 +106,10 @@ public class Municipalite extends Personne {
     arbres.remove(arbre.getId());
   }
 
+  /**
+   * Construit la liste des arbres sous forme String à afficher
+   * @return la liste organisée en lignes
+   */
   public String getArbresStr() {
     return this.arbres.values()
       .stream()
@@ -92,6 +118,10 @@ public class Municipalite extends Personne {
       .orElse("");
   }
 
+  /**
+   * Construit la liste des arbres remarquables sous forme String à afficher
+   * @return la liste organisée en lignes
+   */
   public String getArbresRemarquablesStr() {
     return this.arbresRemarquables.values()
       .stream()
@@ -100,21 +130,11 @@ public class Municipalite extends Personne {
       .orElse("");
   }
 
-  /* // TODO Inutile ?
-  public void progammerVisite(long idArbre, long dateVisite, Membre membre, Association association) throws VisiteDejaProgrammeeException {
-    Visite newVisite = new Visite(membre.getId(), dateVisite);
-    Arbre aRem = (Arbre) this.arbresRemarquables.values()
-      .stream()
-      .filter(arbre -> arbre.getId() == idArbre)
-      .toArray()[0];
-
-    aRem.ajouterVisite(newVisite, association);
-    this.removeArbre(aRem);
-    this.addArbre(aRem);
-  }
-
+  /**
+   * Indique si un arbre est absent de la liste
+   * @param arbre l'arbre à chercher
+   * @return true si l'arbre est absent, false s'il est présent
    */
-
   public boolean estCoupé(Long arbre) {
     return !this.arbres.containsKey(arbre);
   }
