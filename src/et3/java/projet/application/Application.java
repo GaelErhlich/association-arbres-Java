@@ -606,6 +606,9 @@ public class Application {
                     catch (NumberFormatException e) {
                         System.err.println("Vous n'avez pas donné une valeur du bon format. Un nombre était attendu.");
                     }
+                    catch (VisiteDejaProgrammeeException e) {
+                        System.err.println("Cette visite ne peut pas être programmée pour cet arbre, car une visite est déjà prévue.");
+                    }
                     break;
 
 
@@ -643,10 +646,10 @@ public class Application {
                         System.out.println("Indiquez l'identifiant de la visite dont le visiteur doit être défrayé :");
                         commande = scanner.nextLine();
                         long id = Long.parseLong(commande);
+                        System.out.println("Visite valide.");
 
                         association.defrayerVisite(id);
-
-                        // TODO : Défrayer un membre
+                        System.out.println("Le défraiement a été enregistré avec succès.");
 
                     }
                     catch (NumberFormatException e) {
@@ -664,7 +667,7 @@ public class Application {
                                 +"\nAucun remboursement n'aura donc lieu, car impossible de connaître son nombre de visites cette année.");
                     }
                     catch (MaxDefraiementsException e) {
-                        System.err.println(e.membre.getNomEtId()+" a déjà atteint son nombre maximal de défraiements cette année.");
+                        System.err.println("Le membre "+e.membre.getNomEtId()+" a déjà atteint son nombre maximal de défraiements cette année.");
                     }
                     break;
 

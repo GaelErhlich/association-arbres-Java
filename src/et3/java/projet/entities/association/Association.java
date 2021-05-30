@@ -117,10 +117,11 @@ public class Association {
     visite.rendreDefraye();
 
     Membre membre = getMembre( visite.getVisiteurId() );
-    if( membre.getVisitesAnneeCourante() == getMaxVisitesDefrayees() ) {
+    if( membre.getVisitesDefrayeesAnnuel() >= getMaxVisitesDefrayees() ) {
       throw new MaxDefraiementsException(membre, this);
     }
 
+    membre.incrementeVisitesAnneeCourante();
     this.effectuerTransaction(visite.getVisiteurId(), getPrixDefraiement(), "Défraiement pour la visite "+visite.getId());
 
   }

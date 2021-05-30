@@ -34,7 +34,7 @@ public class Transaction {
   public String toString() {
     return "Transaction ("+ (estUneSortie() ? "Sortie" : "Entrée")+") {" +
             (personneId == null ? "" : "Personne n°"+personneId+",") +
-            "" + montant + "€" +
+            " " + montant + "€" +
             ", Motif : '" + raison + '\'' +
             " }";
   }

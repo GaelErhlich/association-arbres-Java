@@ -3,6 +3,8 @@ package et3.java.projet.entities.trees;
 import et3.java.projet.entities.Municipalite;
 import et3.java.projet.entities.association.Association;
 import et3.java.projet.entities.trees.exceptions.ArbreDejaRemarquableException;
+import et3.java.projet.entities.trees.exceptions.VisiteDejaProgrammeeException;
+import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +81,17 @@ public class Arbre {
     return this.estRemarquable;
   }
 
-  public long getDerniereVisite() {
+
+  public Visite getDerniereVisite() throws VisiteNotFoundException {
+    if (lVisites.size() == 0) {
+      throw new VisiteNotFoundException(0);
+    } else {
+      return lVisites.get(lVisites.size() - 1);
+    }
+  }
+
+
+  public long getDerniereVisiteDate() {
     if (lVisites.size() > 0) {
       return lVisites.get(lVisites.size() - 1).getDate();
     }
@@ -88,14 +100,26 @@ public class Arbre {
 
   public boolean isDerniereVisitePassee() {
     Calendar calendarDerniere = Calendar.getInstance();
-    calendarDerniere.setTimeInMillis( getDerniereVisite() );
+    calendarDerniere.setTimeInMillis( getDerniereVisiteDate() );
     Calendar calendarPresent = Calendar.getInstance();
 
     return calendarPresent.after( calendarDerniere );
   }
 
 
-  public void ajouterVisite(Visite visite, Association association) {
+  public void ajouterVisite(Visite visite, Association association) throws VisiteDejaProgrammeeException {
+
+    // On vérifie si l'arbre ne vas pas déjà être visité dans le futur.
+    if( !isDerniereVisitePassee() ) {
+      try {
+        Visite visiteOriginale = getDerniereVisite();
+        throw new VisiteDejaProgrammeeException(this, visiteOriginale, visite);
+      }
+      catch (VisiteNotFoundException e) {
+        e.printStackTrace();
+      }
+    }
+
     lVisites.add(visite);
     association.addVisiteListeComplete(visite);
   }
@@ -123,7 +147,7 @@ public class Arbre {
     StringBuilder str = new StringBuilder();
     Calendar c = Calendar.getInstance();
     Date derniereVisite = this.estRemarquable
-      ? new Date(this.getDerniereVisite())
+      ? new Date(this.getDerniereVisiteDate())
       : null;
 
     if (this.estRemarquable) {
@@ -159,7 +183,7 @@ public class Arbre {
   public String toLongString() {
 
     Calendar c = Calendar.getInstance();
-    c.setTimeInMillis(getDerniereVisite());
+    c.setTimeInMillis(getDerniereVisiteDate());
     String derniereVisite = (estRemarquable
             ? ", Dernière visite :" +
             c.get(Calendar.DAY_OF_WEEK) +
