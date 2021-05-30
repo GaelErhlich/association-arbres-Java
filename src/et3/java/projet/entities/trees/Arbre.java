@@ -3,7 +3,6 @@ package et3.java.projet.entities.trees;
 import et3.java.projet.entities.Municipalite;
 import et3.java.projet.entities.association.Association;
 import et3.java.projet.entities.trees.exceptions.ArbreDejaRemarquableException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -90,24 +89,20 @@ public class Arbre {
     return this.id;
   }
 
-
-  public void rendreRemarquable(Municipalite municipalite) throws ArbreDejaRemarquableException {
-    if(this.estRemarquable())
-      throw new ArbreDejaRemarquableException(this);
+  public void rendreRemarquable(Municipalite municipalite)
+    throws ArbreDejaRemarquableException {
+    if (this.estRemarquable()) throw new ArbreDejaRemarquableException(this);
 
     municipalite.removeArbre(this);
     this.estRemarquable = true;
     municipalite.addArbre(this);
   }
 
-
-
   public void ajouterVisite(Visite visite, Association association) {
     lVisites.add(visite);
     association.addVisiteListeComplete(visite);
     // TODO Ajouter à la liste des visites de l'assoc
   }
-
 
   @Override
   public String toString() {
@@ -126,16 +121,16 @@ public class Arbre {
       .append(id)
       .append("(")
       .append(nomCommun)
-      .append("/")
+      .append("|")
       .append(espece)
-      .append("/")
+      .append("|")
       .append(genre)
       .append("|@")
       .append(adresse)
       .append(
         estRemarquable
           ? "|Dernière visite :" +
-          c.get(Calendar.DAY_OF_WEEK) +
+          c.get(Calendar.DAY_OF_MONTH) +
           "/" +
           c.get(Calendar.MONTH) +
           "/" +
@@ -148,20 +143,24 @@ public class Arbre {
   }
 
   public String toLongString() {
-
     Calendar c = Calendar.getInstance();
     c.setTimeInMillis(getDerniereVisite());
-    String derniereVisite = (estRemarquable
-            ? ", Dernière visite :" +
-            c.get(Calendar.DAY_OF_WEEK) +
-            "/" +
-            c.get(Calendar.MONTH) +
-            "/" +
-            c.get(Calendar.YEAR)
-            : "");
+    String derniereVisite =
+      (
+        estRemarquable
+          ? ", Dernière visite :" +
+          c.get(Calendar.DAY_OF_MONTH) +
+          "/" +
+          c.get(Calendar.MONTH) +
+          "/" +
+          c.get(Calendar.YEAR)
+          : ""
+      );
 
     return (
-      "Arbre#"+getId()+"{" +
+      "Arbre#" +
+      getId() +
+      "{" +
       "genre='" +
       genre +
       '\'' +
@@ -181,9 +180,9 @@ public class Arbre {
       ", hauteur=" +
       hauteur +
       ", Maturité : " +
-              (estAdulte ? "Adulte" : "Jeune" ) +
+      (estAdulte ? "Adulte" : "Jeune") +
       ", " +
-              (estRemarquable ? "Remarquable" : "Non-remarquable") +
+      (estRemarquable ? "Remarquable" : "Non-remarquable") +
       derniereVisite +
       ", Visites=" +
       lVisites.size() +
