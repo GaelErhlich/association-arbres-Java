@@ -3,6 +3,8 @@ package et3.java.projet.application;
 import et3.java.projet.entities.Municipalite;
 import et3.java.projet.entities.association.Association;
 import et3.java.projet.entities.persons.Membre;
+import et3.java.projet.entities.persons.Personne;
+import et3.java.projet.entities.persons.exceptions.DonateurDejaAjouteException;
 import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
@@ -658,7 +660,8 @@ public class Application {
 
                             Tapez :
                             > transaction OU tran : Déclarer une rentrée ou une sortie d'argent
-                            > donateur : Ajouter un donateur à la liste de l'association
+                            > donateurs : Afficher la liste des donateurs enregistrés
+                            > +donateur : Ajouter un donateur à la liste de l'association
                             > -donateur : Supprimer un donateur de la liste de l'association
                             > bilan : Afficher le bilan de l'exercice annuel, et possiblement le valider
                             > retour : Retourner au menu principal"""
@@ -703,8 +706,37 @@ public class Application {
 
 
 
-                case "donateur":
-                    // TODO : Ajouter un donateur à la liste
+                case "donateurs":
+                    System.out.println("Chargement de la liste des donateurs...\n");
+                    System.out.println("Liste des donateurs :\n"+association.getDonateursStr());
+                    break;
+
+
+
+
+
+
+
+                case "+donateur":
+                    try {
+                        System.out.println("Indiquez le nom du nouveau donateur :");
+                        String nom = scanner.nextLine();
+
+                        System.out.println("Indiquez l'adresse du nouveau donateur :");
+                        String adresse = scanner.nextLine();
+
+                        Personne donateur = new Personne(nom, adresse);
+                        association.ajouterDonateur(donateur);
+                        System.out.println("Nouveau donateur ajouté avec succès :\n"
+                                +donateur.toString());
+                    }
+                    // Dans la pratique, cette exception ne peut pas se présenter
+                    // puisque l'on crée une nouvelle personne à chaque fois.
+                    // Elle pourrait cependant servir avec une version améliorée de
+                    // la commande qui accepterait des personnes déjà existantes.
+                    catch (DonateurDejaAjouteException e) {
+                        System.err.println("Ce donateur a déjà été ajouté à la liste.");
+                    }
                     break;
 
 
@@ -757,7 +789,7 @@ public class Application {
     public void initialize(ArrayList<Arbre> arbres) {
 
         // Déclaration de la municipalité
-        municipalite = new Municipalite("Région Île-de-France");
+        municipalite = new Municipalite("Région Île-de-France", "2 Rue Simone Veil, 93400 Saint-Ouen");
 
         // Ajout des arbres à la municipalité
         for(Arbre arbre : arbres) {

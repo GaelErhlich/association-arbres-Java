@@ -6,7 +6,6 @@ import et3.java.projet.entities.persons.Personne;
 import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
 import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
-
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -16,21 +15,20 @@ public class Municipalite extends Personne {
   private TreeMap<Long, Arbre> arbresRemarquables;
   private Map<Long, Arbre> arbres;
 
-  public Municipalite(String nom) {
-    super(nom);
+  public Municipalite(String nom, String adresse) {
+    super(nom, adresse);
     arbresRemarquables = new TreeMap<Long, Arbre>();
     arbres = new HashMap<Long, Arbre>();
   }
 
-
+  /*
   public boolean estArbreDansListeRemarquable(long id) { // TODO en construction
-    return Arrays.stream(getArbresRemarquables()).anyMatch(arbre -> arbre.getId() == id);
-  }
-
+    return Arrays.stream(getArbresRemarquables()).anyMatch(arbre -> arbre.getId() == id); // TODO Peut-être à supprimer en fait ?
+  }*/
 
   public Arbre getArbre(long id) throws ArbreNotFoundException {
     Arbre arbre = this.arbres.get(id);
-    if(arbre == null) {
+    if (arbre == null) {
       throw new ArbreNotFoundException(id);
     }
     return arbre;
@@ -98,8 +96,12 @@ public class Municipalite extends Personne {
       .orElse("");
   }
 
-
-  public void progammerVisite(long idArbre, long dateVisite, Membre membre, Association association) {
+  public void progammerVisite(
+    long idArbre,
+    long dateVisite,
+    Membre membre,
+    Association association
+  ) {
     Visite newVisite = new Visite(membre.getId(), dateVisite);
     Arbre aRem = (Arbre) this.arbresRemarquables.values()
       .stream()
@@ -109,5 +111,9 @@ public class Municipalite extends Personne {
     aRem.ajouterVisite(newVisite, association);
     this.removeArbre(aRem);
     this.addArbre(aRem);
+  }
+
+  public boolean estCoupé(long id) {
+    return !arbres.containsKey(id);
   }
 }

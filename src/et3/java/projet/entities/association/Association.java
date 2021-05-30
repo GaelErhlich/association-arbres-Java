@@ -1,16 +1,22 @@
 package et3.java.projet.entities.association;
 
+import et3.java.projet.entities.Municipalite;
 import et3.java.projet.entities.association.exceptions.BilanTropTotException;
 import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.Personne;
+import et3.java.projet.entities.persons.exceptions.DonateurDejaAjouteException;
+import et3.java.projet.entities.persons.exceptions.DonateurNotFoundException;
 import et3.java.projet.entities.persons.exceptions.MembreCotisationDejaPayeeException;
 import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
+import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
+import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
 import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
 import et3.java.projet.operations.Transaction;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Association {
 
@@ -120,27 +126,109 @@ public class Association {
     transactions.add(new Transaction(partie.getId(), montant, raison));
   }
 
-  public void effectuerBilan() throws BilanTropTotException {
+  public String genererRapportActivite(String arbresRemarquables) {
+    Integer nbrVisites = visites
+      .stream()
+      .filter(visite -> visite.getDate() > dernierBilan.getTime())
+      .toArray()
+      .length;
+
+    Integer nbrTransactions = transactions.size();
+
+    String visitesAnnee = visites
+      .stream()
+      .filter(visite -> visite.getDate() > dernierBilan.getTime())
+      .sorted(
+        (visite1, visite2) -> (int) visite1.getDate() - (int) visite2.getDate()
+      )
+      .map(visite -> visite.toString())
+      .reduce((acc, curr) -> acc + "\n" + curr)
+      .orElse("");
+
+    String transactionsStr = getTransactionsStr();
+
+    Calendar c = Calendar.getInstance();
+    Date now = new Date();
+    c.setTime(now);
+    String nowStr = c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.MONTH) + c.get(Calendar.YEAR);
+
+    return """
+    Bilan de l'exercice budgétaire réalisé le %s :
+    %s visites ont été effectuées cette année :
+    %s
+    Voici la liste des arbres qui ont été retenus pour être envoyés à la mairie : 
+    %s
+    %s transactions ont été effectuées cette année : 
+    %s
+    """.formatted(nowStr, nbrVisites.toString(), visitesAnnee, arbresRemarquables ,nbrTransactions.toString(), transactionsStr);
+  }
+
+  /**
+   *Génère la liste des 5 arbres à transmettre à la municipalité et supprime les voeux des membres
+   *@return La liste des 5 arbres proposer pour la classification
+   */
+  public String genererArbreRemarquables(Municipalite mun) {
+    HashMap<Long, Integer> votes = new HashMap<Long, Integer>();
+
+    for (Membre membre : membres) {
+      Long[] arbresSouhaites = membre.getArbresSouhaites();
+      for (Long arbre : arbresSouhaites) {
+        if (arbre != null && votes.containsKey(arbre)) {
+          votes.put(arbre.longValue(), votes.get(arbre) + 1);
+        } else {
+          votes.put(arbre, 1);
+        }
+      }
+      membre.reinitialiserArbresSouhaites();
+    }
+
+    votes.keySet().removeIf(arbre -> mun.estCoupé(arbre));
+
+    return votes
+      .entrySet()
+      .stream()
+      .sorted((arbre1, arbre2) -> arbre2.getValue() - arbre1.getValue())
+      .limit(5)
+      .map(
+        arbre -> {
+          return arbre.getKey();
+        }
+      )
+      .map(
+        arbre -> {
+          try {
+            return mun.getArbre(arbre);
+          } catch (ArbreNotFoundException e) {
+            e.printStackTrace();
+            return null;
+          }
+        }
+      )
+      .map(arbre->arbre.toString()).reduce((acc, curr)->acc + "\n" + curr).orElse("");
+  }
+
+  public String effectuerBilan(Municipalite mun) throws BilanTropTotException {
+    Date now = new Date();
     if (dernierBilan != null) {
       Calendar c = Calendar.getInstance();
-      Date now = new Date();
       Date dernierBilanClone = (Date) dernierBilan.clone();
       c.setTime(dernierBilanClone);
       c.add(Calendar.YEAR, 1);
       if (c.after(now)) {
         throw new BilanTropTotException(c);
-      } else {
-        dernierBilan = now;
+      } 
+    }
+    dernierBilan = now;
         membres.forEach(
           membre -> {
             if (!membre.estAJourDeCotisation()) {
               membres.remove(membre);
-              membre = null;
             }
           }
         );
-      }
-    }
+        String arbresRemarquables = genererArbreRemarquables(mun);
+        rapportAnneePrec = genererRapportActivite(arbresRemarquables);
+    return rapportAnneePrec;
   }
 
   public Transaction effectuerTransaction(
@@ -166,6 +254,57 @@ public class Association {
       stringBuilder.append(transaction.toString() + "\n");
     }
     stringBuilder.append("Solde : " + solde + "€\n");
+
+    return stringBuilder.toString();
+  }
+
+  public Personne getDonateur(long id) throws DonateurNotFoundException {
+    // TODO : Obtenir un donateur à partir de son identifiant
+    Object[] donateursObj = donateurs
+      .stream()
+      .filter(personne -> personne.getId() == id)
+      .toArray();
+
+    if (donateursObj.length == 0) {
+      throw new DonateurNotFoundException(id);
+    } else {
+      return (Personne) donateursObj[0];
+    }
+  }
+
+  public void ajouterDonateur(Personne personne)
+    throws DonateurDejaAjouteException {
+    try {
+      Personne donateur = getDonateur(personne.getId());
+      throw new DonateurDejaAjouteException(personne, this); // Si on a pu trouver le donateur, alors on ne doit pas l'ajouter à nouveau.
+    } catch (DonateurNotFoundException e) { // Si on ne l'a pas trouvé dans la liste, c'est que tout est normal.
+      donateurs.add(personne);
+    }
+  }
+
+  public void retirerDonateur(long id) throws DonateurNotFoundException {
+    Personne donateur = getDonateur(id);
+    donateurs.remove(donateur);
+    // TODO : Supprimer un donateur de la liste
+  }
+
+  public Personne[] getDonateurs() {
+    Object[] donateursObj = donateurs.toArray();
+    Personne[] donateursArr = new Personne[donateursObj.length];
+    for (int i = 0; i < donateursObj.length; i++) {
+      donateursArr[i] = (Personne) donateursObj[i];
+    }
+
+    return donateursArr;
+  }
+
+  public String getDonateursStr() {
+    StringBuilder stringBuilder = new StringBuilder();
+    Personne[] donateurs = getDonateurs();
+
+    for (Personne donateur : donateurs) {
+      stringBuilder.append(donateur.toString() + "\n");
+    }
 
     return stringBuilder.toString();
   }

@@ -5,9 +5,11 @@ public class Personne {
   private static long idAcc = 0;
   private long id;
   private String nomComplet;
+  private String adresse;
 
-  public Personne(String nomComplet) {
+  public Personne(String nomComplet, String adresse) {
     this.nomComplet = nomComplet;
+    this.adresse = adresse;
     this.id = idAcc;
     this.idAcc += 1;
   }
@@ -18,5 +20,14 @@ public class Personne {
 
   public long getId() {
     return this.id;
+  }
+
+
+  @Override
+  public String toString() {
+    return "Personne#"+getId()+ " {" +
+            "Nom : " + nomComplet +
+            ", Adresse : '" + adresse + '\'' +
+            "}";
   }
 }
