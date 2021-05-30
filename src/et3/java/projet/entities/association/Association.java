@@ -2,6 +2,7 @@ package et3.java.projet.entities.association;
 
 import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.Personne;
+import et3.java.projet.entities.persons.exceptions.MembreCotisationDejaPayeeException;
 import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Visite;
 import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
@@ -55,6 +56,11 @@ public class Association {
   }
 
 
+  public void validerCotisation(Membre membre) throws MembreCotisationDejaPayeeException {
+    membre.validerCotisation(this);
+  }
+
+
   
   public String getMembresStr() {
     StringBuilder liste = new StringBuilder();
@@ -102,7 +108,9 @@ public class Association {
   }
 
 
-  public void effectuerTransaction(Personne partie, float montant, String raison) {
-    transactions.add(  new Transaction(partie, montant, raison) );
+  public Transaction effectuerTransaction(Long id, float montant, String raison) {
+    Transaction transaction = new Transaction(id, montant, raison);
+    transactions.add( transaction );
+    return transaction;
   }
 }

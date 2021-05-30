@@ -4,13 +4,26 @@ import et3.java.projet.entities.persons.Personne;
 
 public class Transaction {
 
-  private Personne personne;
+  private Long personneId;
   private float montant;
   private String raison;
 
-  public Transaction(Personne partie, float montant, String raison) {
-    this.personne = partie;
+  public Transaction(Long personneId, float montant, String raison) {
+    this.personneId = personneId;
     this.montant = montant;
     this.raison = raison;
+  }
+
+  public boolean estUneSortie() {
+    return montant < 0;
+  }
+
+  @Override
+  public String toString() {
+    return "Transaction ("+ (estUneSortie() ? "Sortie" : "Entrée")+") {" +
+            "Personne n°" + personneId +
+            ", " + montant + "€" +
+            ", Motif : '" + raison + '\'' +
+            " }";
   }
 }

@@ -10,13 +10,14 @@ import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class Municipalite {
+public class Municipalite extends Personne {
 
   private static long counter = 0;
   private TreeMap<Long, Arbre> arbresRemarquables;
   private Map<Long, Arbre> arbres;
 
-  public Municipalite() {
+  public Municipalite(String nom) {
+    super(nom);
     arbresRemarquables = new TreeMap<Long, Arbre>();
     arbres = new HashMap<Long, Arbre>();
   }
