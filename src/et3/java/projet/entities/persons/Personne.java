@@ -18,6 +18,10 @@ public class Personne {
     return this.nomComplet;
   }
 
+  public String getNomEtId() {
+    return this.getNomComplet()+"#"+this.getId();
+  }
+
   public long getId() {
     return this.id;
   }
@@ -30,4 +34,5 @@ public class Personne {
             ", Adresse : '" + adresse + '\'' +
             "}";
   }
+
 }

@@ -5,12 +5,12 @@ import et3.java.projet.entities.association.Association;
 import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.Personne;
 import et3.java.projet.entities.persons.exceptions.DonateurDejaAjouteException;
+import et3.java.projet.entities.persons.exceptions.DonateurNotFoundException;
+import et3.java.projet.entities.persons.exceptions.MembreCotisationDejaPayeeException;
 import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
-import et3.java.projet.entities.trees.exceptions.ArbreDejaRemarquableException;
-import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
-import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
+import et3.java.projet.entities.trees.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -379,7 +379,28 @@ public class Application {
 
 
                 case "cotisé":
-                    // TODO : Mettre à jour de cotisation
+                    try {
+
+                        System.out.println("Rappel : Le montant de la cotisation est "+association.getPrixCotisation()+"€.");
+                        System.out.println("Indiquez l'identifiant du membre ayant nouvellement payé sa cotisation :");
+                        commande = scanner.nextLine();
+                        long id = Long.parseLong(commande);
+                        Membre membre = association.getMembre(id);
+
+                        association.validerCotisation(membre);
+                        System.out.println(membre.getNomEtId()+" est maintenant à jour de cotisation. ("+association.getPrixCotisation()+"€)");
+
+                    }
+                    catch (NumberFormatException e) {
+                        System.err.println("L'identifiant spécifié "+commande+" est invalide. " +
+                                "Seuls des nombres peuvent être des identifiants.");
+                    }
+                    catch (MembreNotFoundException e) {
+                        System.err.println("Aucun membre n'a été trouvé avec l'identifiant "+e.id+".");
+                    }
+                    catch (MembreCotisationDejaPayeeException e) {
+                        System.err.println("Le membre "+e.membre.getNomEtId()+" est déjà à jour de cotisation.");
+                    }
                     break;
 
 
@@ -493,7 +514,7 @@ public class Application {
                             > information OU info : Consulter les informations relatives à une visite
                             > programmer : Définir une visite
                             > rapport : Ajouter un compte-rendu à une visite
-                            > acquitter : Indiquer qu'un membre a été défrayé
+                            > acquitter OU défrayer : Indiquer qu'un membre a été défrayé
                             > retour : Retourner au menu principal"""
             );
             commande = scanner.nextLine();
@@ -585,6 +606,9 @@ public class Application {
                     catch (NumberFormatException e) {
                         System.err.println("Vous n'avez pas donné une valeur du bon format. Un nombre était attendu.");
                     }
+                    catch (VisiteDejaProgrammeeException e) {
+                        System.err.println("Cette visite ne peut pas être programmée pour cet arbre, car une visite est déjà prévue.");
+                    }
                     break;
 
 
@@ -614,8 +638,37 @@ public class Application {
 
 
 
+                case "défrayer":
                 case "acquitter":
-                    // TODO : Défrayer un membre
+                    System.out.println("Rappel : Le montant remboursé en défraiement est "+association.getPrixCotisation()+"€.");
+                    try {
+
+                        System.out.println("Indiquez l'identifiant de la visite dont le visiteur doit être défrayé :");
+                        commande = scanner.nextLine();
+                        long id = Long.parseLong(commande);
+                        System.out.println("Visite valide.");
+
+                        association.defrayerVisite(id);
+                        System.out.println("Le défraiement a été enregistré avec succès.");
+
+                    }
+                    catch (NumberFormatException e) {
+                        System.err.println("Un identifiant ne peut contenir que des chiffres.");
+                    }
+                    catch (VisiteNotFoundException e) {
+                        System.err.println("L'identifiant de visite "+e.id+" n'a pas pu être trouvé dans l'association.");
+                    }
+                    catch (VisiteDejaDefrayeeException e) {
+                        System.err.println("La visite suivante a déjà été défrayée :\n"
+                                +e.visite.toString() );
+                    }
+                    catch (MembreNotFoundException e) {
+                        System.err.println("Il semblerait que le membre d'identifiant "+e.id+" ne soit plus dans l'association."
+                                +"\nAucun remboursement n'aura donc lieu, car impossible de connaître son nombre de visites cette année.");
+                    }
+                    catch (MaxDefraiementsException e) {
+                        System.err.println("Le membre "+e.membre.getNomEtId()+" a déjà atteint son nombre maximal de défraiements cette année.");
+                    }
                     break;
 
 
@@ -744,7 +797,23 @@ public class Application {
 
 
                 case "-donateur":
-                    // TODO : Supprimer un donateur de la liste
+                    try {
+
+                        System.out.println("Indiquez l'identifiant du donateur à supprimer de la liste :");
+                        commande = scanner.nextLine();
+                        long id = Long.parseLong(commande);
+
+                        Personne donateur = association.retirerDonateur(id);
+                        System.out.println("Donateur retiré avec succès :\n"
+                                +donateur.toString());
+
+                    }
+                    catch (NumberFormatException e) {
+                        System.err.println("Le format de "+commande+" ne correspond pas au format de nombre attendu.");
+                    }
+                    catch (DonateurNotFoundException e) {
+                        System.err.println("Aucun donateur n'a été trouvé avec l'identifiant "+e.id+".");
+                    }
                     break;
 
 

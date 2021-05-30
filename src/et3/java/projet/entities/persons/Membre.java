@@ -10,7 +10,7 @@ public class Membre extends Personne {
 
   private String adresse;
   private long naissance;
-  private short visitesAnneeCourante;
+  private short visitesDefrayeesAnnuel;
   private long dateDerniereCotisation;
   private short anneePremiereCotisation;
   private Long[] arbresSouhaites = new Long[5];
@@ -21,11 +21,11 @@ public class Membre extends Personne {
     String adresse,
     long dateDerniereCotisation,
     short anneePremiereCotisation,
-    short visitesAnneeCourante
+    short visitesDefrayeesAnnuel
   ) {
     super(nomComplet, adresse);
     this.naissance = naissance;
-    this.visitesAnneeCourante = visitesAnneeCourante;
+    this.visitesDefrayeesAnnuel = visitesDefrayeesAnnuel;
     this.dateDerniereCotisation = dateDerniereCotisation;
     this.anneePremiereCotisation = anneePremiereCotisation;
   }
@@ -36,6 +36,14 @@ public class Membre extends Personne {
 
     c.setTimeInMillis(dateDerniereCotisation);
     return c.get(Calendar.YEAR) >= anneeCourante;
+  }
+
+  public short getVisitesDefrayeesAnnuel() {
+    return visitesDefrayeesAnnuel;
+  }
+
+  public void incrementeVisitesAnneeCourante() {
+    this.visitesDefrayeesAnnuel++;
   }
 
   /**
@@ -103,8 +111,8 @@ public class Membre extends Personne {
       getNomComplet() +
       ", " +
       adresse +
-      ", Visites (cette année) : " +
-      visitesAnneeCourante +
+      ", Visites défrayées (cette année) : " +
+      getVisitesDefrayeesAnnuel() +
       ", Arrivée en " +
       anneePremiereCotisation +
       ", Cotisation : " +
@@ -145,8 +153,8 @@ public class Membre extends Personne {
       dateNaiss.get(Calendar.MONTH) +
       "/" +
       dateNaiss.get(Calendar.YEAR) +
-      "\n  Nombre de visites cette année : " +
-      visitesAnneeCourante +
+      "\n  Nombre de visites défrayées cette année : " +
+      getVisitesDefrayeesAnnuel() +
       "\n  Date de dernière cotisation : " +
       dateCotisation +
       "\n  Cotisation à jour : " +

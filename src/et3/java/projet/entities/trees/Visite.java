@@ -1,6 +1,7 @@
 package et3.java.projet.entities.trees;
 
 import et3.java.projet.entities.persons.Membre;
+import et3.java.projet.entities.trees.exceptions.VisiteDejaDefrayeeException;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -26,12 +27,16 @@ public class Visite {
     this.compteRendu = compteRendu;
   }
 
+  public long getId() {
+    return this.id;
+  }
+
   public long getDate() {
     return this.date;
   }
 
-  public long getId() {
-    return this.id;
+  public long getVisiteurId() {
+    return visiteur;
   }
 
   public String getCompteRendu() {
@@ -40,6 +45,23 @@ public class Visite {
 
   public void setCompteRendu(String compteRendu) {
     this.compteRendu = compteRendu;
+  }
+
+
+  public boolean estDefrayee() {
+    return estDefrayee;
+  }
+
+
+  /**
+   * Change l'état de la visite en "défrayée".
+   * Attention : N'ajoute pas la transaction à l'association.
+   */
+  public void rendreDefraye() throws VisiteDejaDefrayeeException {
+    if(estDefrayee()) {
+      throw new VisiteDejaDefrayeeException(this);
+    }
+    estDefrayee = true;
   }
 
 

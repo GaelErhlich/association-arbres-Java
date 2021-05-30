@@ -6,6 +6,7 @@ import et3.java.projet.entities.persons.Personne;
 import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
 import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
+import et3.java.projet.entities.trees.exceptions.VisiteDejaProgrammeeException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -55,7 +56,7 @@ public class Municipalite extends Personne {
     boolean estRemarquable = arbre.estRemarquable();
 
     if (estRemarquable) {
-      long derniereVisite = arbre.getDerniereVisite();
+      long derniereVisite = arbre.getDerniereVisiteDate();
 
       if (derniereVisite == 0) {
         derniereVisite = Municipalite.counter;
@@ -96,12 +97,8 @@ public class Municipalite extends Personne {
       .orElse("");
   }
 
-  public void progammerVisite(
-    long idArbre,
-    long dateVisite,
-    Membre membre,
-    Association association
-  ) {
+  /* // TODO Inutile ?
+  public void progammerVisite(long idArbre, long dateVisite, Membre membre, Association association) throws VisiteDejaProgrammeeException {
     Visite newVisite = new Visite(membre.getId(), dateVisite);
     Arbre aRem = (Arbre) this.arbresRemarquables.values()
       .stream()
@@ -113,7 +110,9 @@ public class Municipalite extends Personne {
     this.addArbre(aRem);
   }
 
-  public boolean estCoupé(long id) {
-    return !arbres.containsKey(id);
+   */
+
+  public boolean estCoupé(Long arbre) {
+    return !this.arbres.containsKey(arbre);
   }
 }

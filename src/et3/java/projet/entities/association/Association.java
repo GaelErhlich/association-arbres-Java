@@ -11,6 +11,8 @@ import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
 import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
+import et3.java.projet.entities.trees.exceptions.MaxDefraiementsException;
+import et3.java.projet.entities.trees.exceptions.VisiteDejaDefrayeeException;
 import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
 import et3.java.projet.operations.Transaction;
 import java.util.ArrayList;
@@ -22,12 +24,14 @@ public class Association {
 
   private String nom = "Association d'amoureux des arbres générique";
   private String rapportAnneePrec = "";
-  private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-  private ArrayList<Personne> donateurs = new ArrayList<Personne>();
-  private ArrayList<Membre> membres = new ArrayList<Membre>();
-  private ArrayList<Visite> visites = new ArrayList<Visite>();
+  private ArrayList<Transaction> transactions = new ArrayList<>();
+  private ArrayList<Personne> donateurs = new ArrayList<>();
+  private ArrayList<Membre> membres = new ArrayList<>();
+  private ArrayList<Visite> visites = new ArrayList<>();
   private float argent = 0;
-  private float prixCotisation = 20;
+  private float prixCotisation = 20.00f;
+  private float prixDefraiement = 9.50f;
+  private short maxVisitesDefrayees = 2;
   private Date dernierBilan;
 
   public Association() {}
@@ -72,9 +76,24 @@ public class Association {
     membres.remove(membre);
   }
 
-  public void validerCotisation(Membre membre)
-    throws MembreCotisationDejaPayeeException {
+
+  public float getPrixCotisation() {
+    return prixCotisation;
+  }
+
+
+  public void validerCotisation(Membre membre) throws MembreCotisationDejaPayeeException {
     membre.validerCotisation(this);
+    this.effectuerTransaction(membre.getId(), this.getPrixCotisation(), "Paiement de cotisation");
+  }
+
+
+  public float getPrixDefraiement() {
+    return prixDefraiement;
+  }
+
+  public short getMaxVisitesDefrayees() {
+    return maxVisitesDefrayees;
   }
 
   public String getMembresStr() {
@@ -102,6 +121,24 @@ public class Association {
     }
   }
 
+
+  public void defrayerVisite(long id) throws VisiteNotFoundException, VisiteDejaDefrayeeException, MembreNotFoundException, MaxDefraiementsException {
+
+    Visite visite = getVisite(id);
+    visite.rendreDefraye();
+
+    Membre membre = getMembre( visite.getVisiteurId() );
+    if( membre.getVisitesDefrayeesAnnuel() >= getMaxVisitesDefrayees() ) {
+      throw new MaxDefraiementsException(membre, this);
+    }
+
+    membre.incrementeVisitesAnneeCourante();
+    this.effectuerTransaction(visite.getVisiteurId(), getPrixDefraiement(), "Défraiement pour la visite "+visite.getId());
+
+  }
+
+
+
   /**
    * /!\ Ne pas appeler directement
    * Ajoute une visite à la liste contenant toutes les visites
@@ -111,12 +148,6 @@ public class Association {
     visites.add(visite);
   }
 
-  public void retirerMembre(long id) {
-    Membre membre = (Membre) this.membres.stream()
-      .filter(m -> m.getId() == id)
-      .toArray()[0];
-    membre = null;
-  }
 
   public void effectuerTransaction(
     Personne partie,
@@ -247,23 +278,19 @@ public class Association {
    */
   public String getTransactionsStr() {
     StringBuilder stringBuilder = new StringBuilder();
-    long solde = 0;
+    float solde = 0;
 
     for (Transaction transaction : transactions) {
       solde += transaction.getMontant();
-      stringBuilder.append(transaction.toString() + "\n");
+      stringBuilder.append(transaction.toString()).append("\n");
     }
-    stringBuilder.append("Solde : " + solde + "€\n");
+    stringBuilder.append("Solde annuel : ").append(solde).append("€\n");
 
     return stringBuilder.toString();
   }
 
   public Personne getDonateur(long id) throws DonateurNotFoundException {
-    // TODO : Obtenir un donateur à partir de son identifiant
-    Object[] donateursObj = donateurs
-      .stream()
-      .filter(personne -> personne.getId() == id)
-      .toArray();
+    Object[] donateursObj = donateurs.stream().filter(personne -> personne.getId() == id).toArray();
 
     if (donateursObj.length == 0) {
       throw new DonateurNotFoundException(id);
@@ -276,16 +303,17 @@ public class Association {
     throws DonateurDejaAjouteException {
     try {
       Personne donateur = getDonateur(personne.getId());
-      throw new DonateurDejaAjouteException(personne, this); // Si on a pu trouver le donateur, alors on ne doit pas l'ajouter à nouveau.
-    } catch (DonateurNotFoundException e) { // Si on ne l'a pas trouvé dans la liste, c'est que tout est normal.
+      throw new DonateurDejaAjouteException(donateur, this); // Si on a pu trouver le donateur, alors on ne doit pas l'ajouter à nouveau.
+    }
+    catch (DonateurNotFoundException e) { // Si on ne l'a pas trouvé dans la liste, c'est que tout est normal.
       donateurs.add(personne);
     }
   }
 
-  public void retirerDonateur(long id) throws DonateurNotFoundException {
+  public Personne retirerDonateur(long id) throws DonateurNotFoundException {
     Personne donateur = getDonateur(id);
     donateurs.remove(donateur);
-    // TODO : Supprimer un donateur de la liste
+    return donateur;
   }
 
   public Personne[] getDonateurs() {
@@ -302,8 +330,8 @@ public class Association {
     StringBuilder stringBuilder = new StringBuilder();
     Personne[] donateurs = getDonateurs();
 
-    for (Personne donateur : donateurs) {
-      stringBuilder.append(donateur.toString() + "\n");
+    for(Personne donateur : donateurs) {
+      stringBuilder.append(donateur.toString()).append("\n");
     }
 
     return stringBuilder.toString();
