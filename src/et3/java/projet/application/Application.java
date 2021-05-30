@@ -832,6 +832,17 @@ public class Application {
 						System.err.println(e.getMessage());
 						e.printStackTrace();
 					}
+                    if(association.getDonateurs().length > 0){
+                         System.out.println("Veuillez indiquer le montant de donation pour chaque donateur, si le donateur ne fait pas de don veuillez indiquer '0':");
+                         for(Personne donateur: association.getDonateurs()){
+                         System.out.print(donateur.getNomEtId()+ " :");
+                         Float montant = Float.parseFloat(scanner.nextLine());
+                             if(montant.intValue() != 0){
+                                association.effectuerTransaction(donateur.getId(),montant, "Don");
+                             }
+                        }
+                     System.out.println("L'ensemble des dons ont été enregistré.");
+                    }
                     break;
 
 
