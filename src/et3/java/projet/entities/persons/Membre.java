@@ -6,6 +6,9 @@ import et3.java.projet.entities.persons.exceptions.MembreCotisationDejaPayeeExce
 import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
 import java.util.Calendar;
 
+/**
+ * Personne représentant un membre d'une association d'amis des arbres
+ */
 public class Membre extends Personne {
 
   private String adresse;

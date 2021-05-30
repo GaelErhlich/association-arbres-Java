@@ -5,6 +5,9 @@ import et3.java.projet.entities.trees.Arbre;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * Classe démarrant et initialisant le programme
+ */
 public class Main {
 
 

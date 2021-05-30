@@ -1,5 +1,8 @@
 package et3.java.projet.entities.trees.exceptions;
 
+/**
+ * Exception levée lorsqu'un ID ne correspond à aucune visite
+ */
 public class VisiteNotFoundException extends Exception {
 
     public long id;

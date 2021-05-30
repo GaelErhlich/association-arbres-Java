@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
 
+
+/**
+ * Classe gérant les interactions avec le programme
+ */
 public class Application {
 
     private Municipalite municipalite;

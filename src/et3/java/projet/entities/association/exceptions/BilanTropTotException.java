@@ -2,6 +2,9 @@ package et3.java.projet.entities.association.exceptions;
 
 import java.util.Calendar;
 
+/**
+ * Exception levée lorsqu'on lance le bilan trop tôt après le précédent
+ */
 public class BilanTropTotException extends Exception {
 
   public BilanTropTotException(Calendar c) {

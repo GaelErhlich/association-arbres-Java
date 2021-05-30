@@ -9,6 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+/**
+ * Classe chargeant le fichier CSV
+ */
 public class FileReader 
 {
 	public static ArrayList<Arbre> getDataFromCSVFile(String csvFilePath)

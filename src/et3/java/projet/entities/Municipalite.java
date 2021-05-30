@@ -10,6 +10,9 @@ import et3.java.projet.entities.trees.exceptions.VisiteDejaProgrammeeException;
 import java.util.*;
 import java.util.Map.Entry;
 
+/**
+ * Classe représentant la collectivité locale qui gère les arbres
+ */
 public class Municipalite extends Personne {
 
   private static long counter = 0;

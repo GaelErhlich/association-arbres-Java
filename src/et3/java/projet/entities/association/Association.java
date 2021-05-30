@@ -20,6 +20,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+
+/**
+ * Classe représentant une association d'amoureux des arbres (unique à l'heure actuelle)
+ */
 public class Association {
 
   private String nom = "Association d'amoureux des arbres générique";

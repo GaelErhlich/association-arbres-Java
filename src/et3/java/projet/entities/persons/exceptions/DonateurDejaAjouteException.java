@@ -3,6 +3,9 @@ package et3.java.projet.entities.persons.exceptions;
 import et3.java.projet.entities.association.Association;
 import et3.java.projet.entities.persons.Personne;
 
+/**
+ * Exception levée lorsque l'on essaye d'ajouter un donateur une 2ème fois
+ */
 public class DonateurDejaAjouteException extends Exception {
 
     public Personne donateur;

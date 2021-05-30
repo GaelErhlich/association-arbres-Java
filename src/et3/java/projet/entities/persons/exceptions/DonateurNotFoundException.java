@@ -1,5 +1,8 @@
 package et3.java.projet.entities.persons.exceptions;
 
+/**
+ * Exception levée lorsqu'une ID ne correspond à aucun donateur
+ */
 public class DonateurNotFoundException extends Exception {
 
     public long id;
