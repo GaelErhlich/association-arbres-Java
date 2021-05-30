@@ -7,7 +7,6 @@ import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
 import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
 import et3.java.projet.entities.trees.exceptions.VisiteDejaProgrammeeException;
-
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -26,16 +25,14 @@ public class Municipalite extends Personne {
     arbres = new HashMap<Long, Arbre>();
   }
 
-
   /*
   public boolean estArbreDansListeRemarquable(long id) { // TODO en construction
     return Arrays.stream(getArbresRemarquables()).anyMatch(arbre -> arbre.getId() == id); // TODO Peut-être à supprimer en fait ?
   }*/
 
-
   public Arbre getArbre(long id) throws ArbreNotFoundException {
     Arbre arbre = this.arbres.get(id);
-    if(arbre == null) {
+    if (arbre == null) {
       throw new ArbreNotFoundException(id);
     }
     return arbre;
@@ -103,7 +100,6 @@ public class Municipalite extends Personne {
       .orElse("");
   }
 
-
   /* // TODO Inutile ?
   public void progammerVisite(long idArbre, long dateVisite, Membre membre, Association association) throws VisiteDejaProgrammeeException {
     Visite newVisite = new Visite(membre.getId(), dateVisite);
@@ -118,4 +114,8 @@ public class Municipalite extends Personne {
   }
 
    */
+
+  public boolean estCoupé(Long arbre) {
+    return !this.arbres.containsKey(arbre);
+  }
 }

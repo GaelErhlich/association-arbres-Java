@@ -5,7 +5,6 @@ import et3.java.projet.entities.association.Association;
 import et3.java.projet.entities.trees.exceptions.ArbreDejaRemarquableException;
 import et3.java.projet.entities.trees.exceptions.VisiteDejaProgrammeeException;
 import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -84,7 +83,6 @@ public class Arbre {
     return this.estRemarquable;
   }
 
-
   public Visite getDerniereVisite() throws VisiteNotFoundException {
     if (lVisites.size() == 0) {
       throw new VisiteNotFoundException(0);
@@ -92,7 +90,6 @@ public class Arbre {
       return lVisites.get(lVisites.size() - 1);
     }
   }
-
 
   public long getDerniereVisiteDate() {
     if (lVisites.size() > 0) {
@@ -103,22 +100,20 @@ public class Arbre {
 
   public boolean isDerniereVisitePassee() {
     Calendar calendarDerniere = Calendar.getInstance();
-    calendarDerniere.setTimeInMillis( getDerniereVisiteDate() );
+    calendarDerniere.setTimeInMillis(getDerniereVisiteDate());
     Calendar calendarPresent = Calendar.getInstance();
 
-    return calendarPresent.after( calendarDerniere );
+    return calendarPresent.after(calendarDerniere);
   }
 
-
-  public void ajouterVisite(Visite visite, Association association) throws VisiteDejaProgrammeeException {
-
+  public void ajouterVisite(Visite visite, Association association)
+    throws VisiteDejaProgrammeeException {
     // On vérifie si l'arbre ne vas pas déjà être visité dans le futur.
-    if( !isDerniereVisitePassee() ) {
+    if (!isDerniereVisitePassee()) {
       try {
         Visite visiteOriginale = getDerniereVisite();
         throw new VisiteDejaProgrammeeException(this, visiteOriginale, visite);
-      }
-      catch (VisiteNotFoundException e) {
+      } catch (VisiteNotFoundException e) {
         e.printStackTrace();
       }
     }
@@ -127,23 +122,18 @@ public class Arbre {
     association.addVisiteListeComplete(visite);
   }
 
-
   public long getId() {
     return this.id;
   }
 
-
-  public void rendreRemarquable(Municipalite municipalite) throws ArbreDejaRemarquableException {
-    if(this.estRemarquable())
-      throw new ArbreDejaRemarquableException(this);
+  public void rendreRemarquable(Municipalite municipalite)
+    throws ArbreDejaRemarquableException {
+    if (this.estRemarquable()) throw new ArbreDejaRemarquableException(this);
 
     municipalite.removeArbre(this);
     this.estRemarquable = true;
     municipalite.addArbre(this);
   }
-
-
-
 
   @Override
   public String toString() {
@@ -162,16 +152,16 @@ public class Arbre {
       .append(id)
       .append("(")
       .append(nomCommun)
-      .append("/")
+      .append("|")
       .append(espece)
-      .append("/")
+      .append("|")
       .append(genre)
       .append("|@")
       .append(adresse)
       .append(
         estRemarquable
           ? "|Dernière visite :" +
-          c.get(Calendar.DAY_OF_WEEK) +
+          c.get(Calendar.DAY_OF_MONTH) +
           "/" +
           c.get(Calendar.MONTH) +
           "/" +
@@ -184,20 +174,24 @@ public class Arbre {
   }
 
   public String toLongString() {
-
     Calendar c = Calendar.getInstance();
     c.setTimeInMillis(getDerniereVisiteDate());
-    String derniereVisite = (estRemarquable
-            ? ", Dernière visite :" +
-            c.get(Calendar.DAY_OF_WEEK) +
-            "/" +
-            c.get(Calendar.MONTH) +
-            "/" +
-            c.get(Calendar.YEAR)
-            : "");
+    String derniereVisite =
+      (
+        estRemarquable
+          ? ", Dernière visite :" +
+          c.get(Calendar.DAY_OF_WEEK) +
+          "/" +
+          c.get(Calendar.MONTH) +
+          "/" +
+          c.get(Calendar.YEAR)
+          : ""
+      );
 
     return (
-      "Arbre#"+getId()+"{" +
+      "Arbre#" +
+      getId() +
+      "{" +
       "genre='" +
       genre +
       '\'' +
@@ -217,9 +211,9 @@ public class Arbre {
       ", hauteur=" +
       hauteur +
       ", Maturité : " +
-              (estAdulte ? "Adulte" : "Jeune" ) +
+      (estAdulte ? "Adulte" : "Jeune") +
       ", " +
-              (estRemarquable ? "Remarquable" : "Non-remarquable") +
+      (estRemarquable ? "Remarquable" : "Non-remarquable") +
       derniereVisite +
       ", Visites=" +
       lVisites.size() +
