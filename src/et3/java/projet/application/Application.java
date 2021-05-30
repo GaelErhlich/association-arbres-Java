@@ -5,6 +5,7 @@ import et3.java.projet.entities.association.Association;
 import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.Personne;
 import et3.java.projet.entities.persons.exceptions.DonateurDejaAjouteException;
+import et3.java.projet.entities.persons.exceptions.DonateurNotFoundException;
 import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
@@ -744,7 +745,23 @@ public class Application {
 
 
                 case "-donateur":
-                    // TODO : Supprimer un donateur de la liste
+                    try {
+
+                        System.out.println("Indiquez l'identifiant du donateur à supprimer de la liste :");
+                        commande = scanner.nextLine();
+                        long id = Long.parseLong(commande);
+
+                        Personne donateur = association.retirerDonateur(id);
+                        System.out.println("Donateur retiré avec succès :\n"
+                                +donateur.toString());
+
+                    }
+                    catch (NumberFormatException e) {
+                        System.err.println("Le format de "+commande+" ne correspond pas au format de nombre attendu.");
+                    }
+                    catch (DonateurNotFoundException e) {
+                        System.err.println("Aucun donateur n'a été trouvé avec l'identifiant "+e.id+".");
+                    }
                     break;
 
 

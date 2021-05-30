@@ -102,13 +102,6 @@ public class Association {
   }
 
 
-  public void retirerMembre(long id) {
-    Membre membre = (Membre) this.membres.stream()
-      .filter(m -> m.getId() == id)
-      .toArray()[0];
-    membre = null;
-  }
-
 
   public Transaction effectuerTransaction(Long id, float montant, String raison) {
     Transaction transaction = new Transaction(id, montant, raison);
@@ -127,9 +120,9 @@ public class Association {
 
     for(Transaction transaction : transactions) {
       solde += transaction.getMontant();
-      stringBuilder.append(transaction.toString()+"\n");
+      stringBuilder.append(transaction.toString()).append("\n");
     }
-    stringBuilder.append("Solde : "+solde+"€\n");
+    stringBuilder.append("Solde : ").append(solde).append("€\n");
 
     return stringBuilder.toString();
   }
@@ -137,7 +130,6 @@ public class Association {
 
 
   public Personne getDonateur(long id) throws DonateurNotFoundException {
-    // TODO : Obtenir un donateur à partir de son identifiant
     Object[] donateursObj = donateurs.stream().filter(personne -> personne.getId() == id).toArray();
 
     if(donateursObj.length == 0) {
@@ -151,17 +143,17 @@ public class Association {
   public void ajouterDonateur(Personne personne) throws DonateurDejaAjouteException {
     try {
       Personne donateur = getDonateur(personne.getId());
-      throw new DonateurDejaAjouteException(personne, this); // Si on a pu trouver le donateur, alors on ne doit pas l'ajouter à nouveau.
+      throw new DonateurDejaAjouteException(donateur, this); // Si on a pu trouver le donateur, alors on ne doit pas l'ajouter à nouveau.
     }
     catch (DonateurNotFoundException e) { // Si on ne l'a pas trouvé dans la liste, c'est que tout est normal.
       donateurs.add(personne);
     }
   }
 
-  public void retirerDonateur(long id) throws DonateurNotFoundException {
+  public Personne retirerDonateur(long id) throws DonateurNotFoundException {
     Personne donateur = getDonateur(id);
     donateurs.remove(donateur);
-    // TODO : Supprimer un donateur de la liste
+    return donateur;
   }
 
 
@@ -181,7 +173,7 @@ public class Association {
     Personne[] donateurs = getDonateurs();
 
     for(Personne donateur : donateurs) {
-      stringBuilder.append(donateur.toString()+"\n");
+      stringBuilder.append(donateur.toString()).append("\n");
     }
 
     return stringBuilder.toString();
