@@ -155,7 +155,7 @@ public class Application {
 
 
                 case "remarquer":
-                    System.out.println("\nRentrez l'ID de l'arbre nouvellement déclaré comme remarquable par la municipalité :");
+                    System.out.println("\nRentrez l'identifiant de l'arbre nouvellement déclaré comme remarquable par la municipalité :");
                     commande = scanner.nextLine();
                     try {
                         long id = Long.parseLong(commande);
@@ -365,6 +365,8 @@ public class Application {
 
 
 
+
+
                 case "liste":
                     System.out.println("\nChargement de la liste des membres...");
                     System.out.println("\nListe des membres :\n"
@@ -425,8 +427,26 @@ public class Application {
 
 
                 case "exclure":
-                    // TODO : Supprimer un membre
+                    try {
+
+                        System.out.println("Indiquez l'identifiant du membre que vous souhaitez retirer :");
+                        commande = scanner.nextLine();
+                        long id = Long.parseLong(commande);
+                        Membre membre = association.getMembre(id);
+
+                        System.out.println("Supression du membre :\n" + membre.toLongString() );
+                        association.retirerMembre(membre);
+                        System.out.println("Membre supprimé avec succès.");
+
+                    }
+                    catch (NumberFormatException e) {
+                        System.err.println("Vous n'avez pas donné une valeur du bon format. Un nombre était attendu.");
+                    }catch (MembreNotFoundException e) {
+                        System.err.println("Aucun membre n'a été trouvé avec l'identifiant "+e.id+".");
+                    }
                     break;
+
+
 
 
 

@@ -53,6 +53,11 @@ public class Association {
     }
   }
 
+  public void retirerMembre(Membre membre) {
+    membres.remove(membre);
+  }
+
+
   
   public String getMembresStr() {
     StringBuilder liste = new StringBuilder();
