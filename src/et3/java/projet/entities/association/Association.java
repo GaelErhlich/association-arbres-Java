@@ -40,10 +40,19 @@ public class Association {
 
   public Association() {}
 
+  /**
+   * Ajoute un membre à la liste de l'association
+   * @param membre membre à ajouter
+   */
   public void ajouterMembre(Membre membre) {
     membres.add(membre);
   }
 
+  /**
+   * Recherche un membre à partir du début de son nom complet
+   * @param recherche Début du nom
+   * @return Un tableau des Membre correspondant (peut être vide)
+   */
   public Membre[] chercherMembre(String recherche) {
     Object[] membresObj = membres
       .stream()
@@ -64,6 +73,12 @@ public class Association {
     return membresArr;
   }
 
+  /**
+   * Trouve un membre à partir de son id
+   * @param id identifiant du membre
+   * @return le membre trouvé
+   * @throws MembreNotFoundException si le membre n'est pas dans la liste
+   */
   public Membre getMembre(long id) throws MembreNotFoundException {
     Object[] membresId = membres
       .stream()
@@ -76,30 +91,21 @@ public class Association {
     }
   }
 
-  public void retirerMembre(Membre membre) {
-    membres.remove(membre);
+  /**
+   * Retire un membre de la liste des membres de l'association
+   * @param membre le membre à supprimer
+   */
+  public void retirerMembre(Membre membre) throws MembreNotFoundException {
+    boolean aSupprime = membres.remove(membre);
+    if(!aSupprime) {
+      throw new MembreNotFoundException( membre.getId() );
+    }
   }
 
-
-  public float getPrixCotisation() {
-    return prixCotisation;
-  }
-
-
-  public void validerCotisation(Membre membre) throws MembreCotisationDejaPayeeException {
-    membre.validerCotisation(this);
-    this.effectuerTransaction(membre.getId(), this.getPrixCotisation(), "Paiement de cotisation");
-  }
-
-
-  public float getPrixDefraiement() {
-    return prixDefraiement;
-  }
-
-  public short getMaxVisitesDefrayees() {
-    return maxVisitesDefrayees;
-  }
-
+  /**
+   * Donne la liste des membres sous forme de String
+   * @return liste
+   */
   public String getMembresStr() {
     StringBuilder liste = new StringBuilder();
 
@@ -110,10 +116,57 @@ public class Association {
     return liste.toString();
   }
 
+
+  /**
+   * Getter pour le prix de la cotisation pour chaque membre
+   * @return valeur en €
+   */
+  public float getPrixCotisation() {
+    return prixCotisation;
+  }
+
+
+  /**
+   * Indique qu'un membre a bien payé sa cotisation, et l'ajoute aux comptes de l'association
+   * @param membre membre ayant payé sa cotisation
+   * @throws MembreCotisationDejaPayeeException si déjà payée
+   */
+  public void validerCotisation(Membre membre) throws MembreCotisationDejaPayeeException {
+    membre.validerCotisation(this);
+    this.effectuerTransaction(membre.getId(), this.getPrixCotisation(), "Paiement de cotisation");
+  }
+
+
+  /**
+   * Getter pour le prix du défraiement
+   * @return valeur en €
+   */
+  public float getPrixDefraiement() {
+    return prixDefraiement;
+  }
+
+  /**
+   * Getter pour le nombre maximum de visites défrayées autorisées par l'association
+   * @return nombre maximum
+   */
+  public short getMaxVisitesDefrayees() {
+    return maxVisitesDefrayees;
+  }
+
+  /**
+   * Getter de la liste de toutes les visites de l'association
+   * @return tableau de VIsite
+   */
   public Visite[] getVisites() {
     return (Visite[]) this.visites.toArray();
   }
 
+  /**
+   * Getter pour une visite recherchée par identifiant
+   * @param id identifiant numérique
+   * @return la Visite correspondante
+   * @throws VisiteNotFoundException si la visite n'existe pas
+   */
   public Visite getVisite(long id) throws VisiteNotFoundException {
     Object[] visitesWithId =
       this.visites.stream().filter(visite -> visite.getId() == id).toArray();
@@ -125,7 +178,14 @@ public class Association {
     }
   }
 
-
+  /**
+   * Indique qu'une visite a été défrayée
+   * @param id identifiant de la visite
+   * @throws VisiteNotFoundException si la visite n'est pas trouvée
+   * @throws VisiteDejaDefrayeeException si la visite est déjà défrayée
+   * @throws MembreNotFoundException si le membre correspondant à la visite n'est pas trouvé
+   * @throws MaxDefraiementsException si le nombre maximum de défraiements du membre est déjà atteint
+   */
   public void defrayerVisite(long id) throws VisiteNotFoundException, VisiteDejaDefrayeeException, MembreNotFoundException, MaxDefraiementsException {
 
     Visite visite = getVisite(id);
@@ -153,14 +213,13 @@ public class Association {
   }
 
 
-  public void effectuerTransaction(
-    Personne partie,
-    float montant,
-    String raison
-  ) {
-    transactions.add(new Transaction(partie.getId(), montant, raison));
-  }
 
+
+  /**
+   * Génère le rapport d'activité annuel de l'association
+   * @param arbresRemarquables liste des arbres remarquables
+   * @return le rapport
+   */
   public String genererRapportActivite(String arbresRemarquables) {
     Integer nbrVisites = visites
       .stream()
@@ -242,6 +301,12 @@ public class Association {
       .map(arbre->arbre.toString()).reduce((acc, curr)->acc + "\n" + curr).orElse("");
   }
 
+  /**
+   * Fait tout le bilan de l'année de l'association, puis réinitialise les variables annuelles
+   * @param mun la municipalité
+   * @return Ce qui devra être affiché dans l'interface
+   * @throws BilanTropTotException si 1 an n'est pas écoulé depuis le dernier bilan
+   */
   public String effectuerBilan(Municipalite mun) throws BilanTropTotException {
     Date now = new Date();
     if (dernierBilan != null) {
@@ -266,6 +331,12 @@ public class Association {
     return rapportAnneePrec;
   }
 
+  /**
+   * Inscrit une transaction à la comptabilité de l'association
+   * @param id identifiant de la Personne associée à la transaction (peut être null)
+   * @param montant Montant en € de la transaction (négatif pour les pertes d'argent)
+   * @param raison Brève explication de l'entrée ou sortie d'argent
+   */
   public Transaction effectuerTransaction(
     Long id,
     float montant,
@@ -293,6 +364,12 @@ public class Association {
     return stringBuilder.toString();
   }
 
+  /**
+   * Donne un donateur à partir de son identifiant (seulement un donateur)
+   * @param id identifiant du donateur
+   * @return le donateur sous forme de Personne
+   * @throws DonateurNotFoundException si le donateur n'est pas dans la liste de l'association
+   */
   public Personne getDonateur(long id) throws DonateurNotFoundException {
     Object[] donateursObj = donateurs.stream().filter(personne -> personne.getId() == id).toArray();
 
@@ -303,6 +380,11 @@ public class Association {
     }
   }
 
+  /**
+   * Ajoute un donateur à la liste de l'association
+   * @param personne Le donateur sous la forme d'une Personne
+   * @throws DonateurDejaAjouteException si la personne a déjà été ajoutée
+   */
   public void ajouterDonateur(Personne personne)
     throws DonateurDejaAjouteException {
     try {
@@ -314,12 +396,22 @@ public class Association {
     }
   }
 
+  /**
+   * Supprime un donateur de la liste de l'association
+   * @param id identifiant du donateur
+   * @return donateur supprimé (sous forme de Personne)
+   * @throws DonateurNotFoundException si le donateur ne figurait pas dans la liste
+   */
   public Personne retirerDonateur(long id) throws DonateurNotFoundException {
     Personne donateur = getDonateur(id);
     donateurs.remove(donateur);
     return donateur;
   }
 
+  /**
+   * Donne la liste des donateurs de l'association
+   * @return un tableau de Personne
+   */
   public Personne[] getDonateurs() {
     Object[] donateursObj = donateurs.toArray();
     Personne[] donateursArr = new Personne[donateursObj.length];
@@ -330,6 +422,10 @@ public class Association {
     return donateursArr;
   }
 
+  /**
+   * Donne la liste des donateurs sous forme de String à afficher
+   * @return une String des donateurs
+   */
   public String getDonateursStr() {
     StringBuilder stringBuilder = new StringBuilder();
     Personne[] donateurs = getDonateurs();
