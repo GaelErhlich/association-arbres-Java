@@ -28,6 +28,20 @@ public class Arbre {
   private long remarquableDate;
   private ArrayList<Visite> lVisites;
 
+  /**
+   * Constructeur de Arbre
+   * @param id identifiant municipal de l'arbre
+   * @param genre Nom du genre de l'espèce de l'arbre
+   * @param espece Nom de l'espèce de l'arbre
+   * @param nomCommun Nom commun de l'espèce de l'arbre
+   * @param adresse Adresse postale de l'arbre
+   * @param coordonnees Coordonnées GPS de l'arbre (float[2])
+   * @param circonference Circonférence de l'arbre en centimètres
+   * @param hauteur Hauteur de l'arbre en mètres
+   * @param estAdulte true si l'arbre est adulte, false s'il est jeune
+   * @param estRemarquable true si l'arbre est considéré comme remarquable, false sinon
+   * @param remarquableDate Date à laquelle le caractère remarquable a été reconnu (0 si inconnu, ms depuis 01/01/1970)
+   */
   public Arbre(
     long id,
     String genre,
@@ -56,6 +70,18 @@ public class Arbre {
     this.remarquableDate = remarquableDate;
   }
 
+  /**
+   * Constructeur de Arbre
+   * @param id identifiant municipal de l'arbre
+   * @param genre Nom du genre de l'espèce de l'arbre
+   * @param espece Nom de l'espèce de l'arbre
+   * @param nomCommun Nom commun de l'espèce de l'arbre
+   * @param adresse Adresse postale de l'arbre
+   * @param coordonnees Coordonnées GPS de l'arbre (float[2])
+   * @param circonference Circonférence de l'arbre en centimètres
+   * @param hauteur Hauteur de l'arbre en mètres
+   * @param estAdulte true si l'arbre est adulte, false s'il est jeune
+   */
   public Arbre(
     long id,
     String genre,
@@ -79,10 +105,27 @@ public class Arbre {
     lVisites = new ArrayList<Visite>();
   }
 
+  /**
+   * Getter de l'identifiant de l'arbre
+   * @return l'identifiant, un long integer
+   */
+  public long getId() {
+    return this.id;
+  }
+
+  /**
+   * Getter pour savoir si l'arbre est remarquable
+   * @return true si remarquable, false sinon
+   */
   public boolean estRemarquable() {
     return this.estRemarquable;
   }
 
+  /**
+   * Getter de la dernière visite enregistrée sur l'arbre
+   * @return la dernière Visite (passée ou future) sur l'arbre
+   * @throws VisiteNotFoundException si il n'y a aucune visite
+   */
   public Visite getDerniereVisite() throws VisiteNotFoundException {
     if (lVisites.size() == 0) {
       throw new VisiteNotFoundException(0);
@@ -91,6 +134,10 @@ public class Arbre {
     }
   }
 
+  /**
+   * Getter de la date de la dernière visite enregistrée sur cet arbre
+   * @return 0 si aucune visite, vrai date sinon (millisecondes depuis 01/01/1970)
+   */
   public long getDerniereVisiteDate() {
     if (lVisites.size() > 0) {
       return lVisites.get(lVisites.size() - 1).getDate();
@@ -98,6 +145,10 @@ public class Arbre {
     return 0;
   }
 
+  /**
+   * Indique si la dernière visite enregistrée a déjà eu lieu
+   * @return true si passée, false si encore une future visite
+   */
   public boolean isDerniereVisitePassee() {
     Calendar calendarDerniere = Calendar.getInstance();
     calendarDerniere.setTimeInMillis(getDerniereVisiteDate());
@@ -106,6 +157,12 @@ public class Arbre {
     return calendarPresent.after(calendarDerniere);
   }
 
+  /**
+   * Ajoute une visite à la liste des visites de l'arbre et à celle de l'association
+   * @param visite la visite à ajouter à l'arbre
+   * @param association l'association à mettre à jour aussi
+   * @throws VisiteDejaProgrammeeException si une visite est déjà prévue sur cet arbre
+   */
   public void ajouterVisite(Visite visite, Association association)
     throws VisiteDejaProgrammeeException {
     // On vérifie si l'arbre ne vas pas déjà être visité dans le futur.
@@ -122,10 +179,11 @@ public class Arbre {
     association.addVisiteListeComplete(visite);
   }
 
-  public long getId() {
-    return this.id;
-  }
-
+  /**
+   * Rend un arbre remarquable et ajoute l'arbre à la liste des remarquables de la municipalité
+   * @param municipalite Municipalité à mettre à jour
+   * @throws ArbreDejaRemarquableException si l'arbre est déjà remarquable
+   */
   public void rendreRemarquable(Municipalite municipalite)
     throws ArbreDejaRemarquableException {
     if (this.estRemarquable()) throw new ArbreDejaRemarquableException(this);
@@ -135,6 +193,10 @@ public class Arbre {
     municipalite.addArbre(this);
   }
 
+  /**
+   * Met les informations essentielles de l'arbre en 1 String d'une seule ligne
+   * @return une String d'une ligne
+   */
   @Override
   public String toString() {
     StringBuilder str = new StringBuilder();
@@ -173,6 +235,10 @@ public class Arbre {
     return str.toString();
   }
 
+  /**
+   * Met les informations de l'arbre dans une String développée
+   * @return la String descriptive
+   */
   public String toLongString() {
     Calendar c = Calendar.getInstance();
     c.setTimeInMillis(getDerniereVisiteDate());

@@ -11,13 +11,21 @@ import java.util.Calendar;
  */
 public class Membre extends Personne {
 
-  private String adresse;
   private long naissance;
   private short visitesDefrayeesAnnuel;
   private long dateDerniereCotisation;
   private short anneePremiereCotisation;
   private Long[] arbresSouhaites = new Long[5];
 
+  /**
+   * Constructeur par défaut de Membre
+   * @param nomComplet Nom complet du membre
+   * @param naissance Date de naissance du membre (millisecondes depuis 01/01/1970)
+   * @param adresse Adresse postale du membre (String)
+   * @param dateDerniereCotisation Date de la dernière cotisation (millisecondes depuis 01/01/1970)
+   * @param anneePremiereCotisation Année de la première cotisation (format "1998", "2017", etc.)
+   * @param visitesDefrayeesAnnuel Nombre de visites défrayées cette année pour ce membre
+   */
   public Membre(
     String nomComplet,
     long naissance,
@@ -33,6 +41,10 @@ public class Membre extends Personne {
     this.anneePremiereCotisation = anneePremiereCotisation;
   }
 
+  /**
+   * Indique si le membre est à jour de cotisations cette année
+   * @return true si à jour, false si pas à jour
+   */
   public boolean estAJourDeCotisation() {
     Calendar c = Calendar.getInstance();
     int anneeCourante = c.get(Calendar.YEAR);
@@ -41,10 +53,24 @@ public class Membre extends Personne {
     return c.get(Calendar.YEAR) >= anneeCourante;
   }
 
+  /**
+   * Getter pour le nombre de visites que le membre s'est fait défrayer cette année
+   * @return le nombre de visites défrayées
+   */
   public short getVisitesDefrayeesAnnuel() {
     return visitesDefrayeesAnnuel;
   }
 
+  /**
+   * Réinitialise à 0 le nombre de visites défrayées du membre
+   */
+  public void reinitialiserNbrVisites() {
+    this.visitesDefrayeesAnnuel = 0;
+  }
+
+  /**
+   * Incrémente le nombre de visites que le membre s'est fait défrayer cette année, pour mettre à jour
+   */
   public void incrementeVisitesAnneeCourante() {
     this.visitesDefrayeesAnnuel++;
   }
@@ -64,6 +90,12 @@ public class Membre extends Personne {
     dateDerniereCotisation = Calendar.getInstance().getTimeInMillis();
   }
 
+
+  /**
+   * Donne la liste des arbres que le membre veut voir choisis comme remarquables, sous forme de String à afficher
+   * @param municipalite La municipalité de l'arbre
+   * @return une String de la liste
+   */
   public String getArbresSouhaitesStr(Municipalite municipalite) {
     StringBuilder stringBuilder = new StringBuilder();
 
@@ -85,10 +117,20 @@ public class Membre extends Personne {
     return stringBuilder.toString();
   }
 
+
+  /**
+   * Donne la liste des identifiants des arbres souhaités par le membre
+   * @return un tableau de Long integers
+   */
   public Long[] getArbresSouhaites() {
     return this.arbresSouhaites;
   }
 
+
+  /**
+   * Ajoute l'identifiant d'un arbre à la liste de souhaits d'un membre, supprimant le premier pour faire de la place si nécessaire
+   * @param id identifiant de l'arbre
+   */
   public void ajouterSouhaitArbre(long id) {
     short i = 0;
     while (i < 5 && arbresSouhaites[i] != null) { // On cherche la 1ère case libre du tableau.
@@ -105,6 +147,21 @@ public class Membre extends Personne {
     arbresSouhaites[i] = id;
   }
 
+
+
+  /**
+   * Réinitialise la liste des arbres du membre
+   */
+  public void reinitialiserArbresSouhaites() {
+    this.arbresSouhaites = new Long[5];
+  }
+
+
+
+  /**
+   * Met les informations essentielles du membre en une String d'une seule ligne
+   * @return la String d'une ligne
+   */
   @Override
   public String toString() {
     return (
@@ -113,7 +170,7 @@ public class Membre extends Personne {
       " { " +
       getNomComplet() +
       ", " +
-      adresse +
+      getAdresse() +
       ", Visites défrayées (cette année) : " +
       getVisitesDefrayeesAnnuel() +
       ", Arrivée en " +
@@ -124,6 +181,12 @@ public class Membre extends Personne {
     );
   }
 
+
+
+  /**
+   * Met les informations sur le membre en une String développée de plusieurs lignes
+   * @return la String descriptive
+   */
   public String toLongString() {
     Calendar dateNaiss = Calendar.getInstance();
     dateNaiss.setTimeInMillis(naissance);
@@ -149,7 +212,7 @@ public class Membre extends Personne {
       getId() +
       " :" +
       "\n  Adresse : " +
-      adresse +
+      getAdresse() +
       "\n  Date de naissance : " +
       dateNaiss.get(Calendar.DAY_OF_MONTH) +
       "/" +
@@ -166,13 +229,5 @@ public class Membre extends Personne {
       anneePremiereCotisation +
       "\n}"
     );
-  }
-
-  public void reinitialiserArbresSouhaites() {
-    this.arbresSouhaites = new Long[5];
-  }
-
-  public void reinitialiserNbrVisites() {
-    this.visitesDefrayeesAnnuel = 0;
   }
 }

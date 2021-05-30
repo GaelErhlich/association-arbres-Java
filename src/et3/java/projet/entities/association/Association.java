@@ -38,6 +38,9 @@ public class Association {
   private short maxVisitesDefrayees = 2;
   private Date dernierBilan;
 
+  /**
+   * Constructeur par défaut
+   */
   public Association() {}
 
   /**
