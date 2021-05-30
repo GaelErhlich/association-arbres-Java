@@ -244,7 +244,7 @@ public class Association {
     Calendar c = Calendar.getInstance();
     Date now = new Date();
     c.setTime(now);
-    String nowStr = c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.MONTH) + c.get(Calendar.YEAR);
+    String nowStr = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH)+1) +"/"+ c.get(Calendar.YEAR);
 
     return """
     Bilan de l'exercice budgétaire réalisé le %s :

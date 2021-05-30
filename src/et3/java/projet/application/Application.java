@@ -2,6 +2,7 @@ package et3.java.projet.application;
 
 import et3.java.projet.entities.Municipalite;
 import et3.java.projet.entities.association.Association;
+import et3.java.projet.entities.association.exceptions.BilanTropTotException;
 import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.Personne;
 import et3.java.projet.entities.persons.exceptions.DonateurDejaAjouteException;
@@ -825,7 +826,12 @@ public class Application {
 
 
                 case "bilan":
-                    // TODO : Afficher le bilan de l'exercice budgétaire de l'année et permet de boucler
+                    try {
+						System.out.println(association.effectuerBilan(municipalite));
+					} catch (BilanTropTotException e) {
+						System.err.println(e.getMessage());
+						e.printStackTrace();
+					}
                     break;
 
 

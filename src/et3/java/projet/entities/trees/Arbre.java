@@ -163,7 +163,7 @@ public class Arbre {
           ? "|Dernière visite :" +
           c.get(Calendar.DAY_OF_MONTH) +
           "/" +
-          c.get(Calendar.MONTH) +
+          (c.get(Calendar.MONTH) + 1) +
           "/" +
           c.get(Calendar.YEAR)
           : ""
@@ -182,7 +182,7 @@ public class Arbre {
           ? ", Dernière visite :" +
           c.get(Calendar.DAY_OF_WEEK) +
           "/" +
-          c.get(Calendar.MONTH) +
+          (c.get(Calendar.MONTH) + 1) +
           "/" +
           c.get(Calendar.YEAR)
           : ""
