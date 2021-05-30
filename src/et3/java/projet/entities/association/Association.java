@@ -23,7 +23,7 @@ import java.util.HashMap;
 public class Association {
 
   private String nom = "Association d'amoureux des arbres générique";
-  private String rapportAnneePrec = "";
+  private ArrayList<String> rapports = new ArrayList<>();
   private ArrayList<Transaction> transactions = new ArrayList<>();
   private ArrayList<Personne> donateurs = new ArrayList<>();
   private ArrayList<Membre> membres = new ArrayList<>();
@@ -213,7 +213,14 @@ public class Association {
       membre.reinitialiserArbresSouhaites();
     }
 
-    votes.keySet().removeIf(arbre -> mun.estCoupé(arbre));
+    votes.keySet().removeIf(arbre -> {
+		try {
+			return mun.estCoupé(arbre) || mun.getArbre(arbre).estRemarquable();
+		} catch (ArbreNotFoundException e1) {
+      e1.printStackTrace();
+      return false;
+		}
+	});
 
     return votes
       .entrySet()
@@ -254,12 +261,16 @@ public class Association {
           membre -> {
             if (!membre.estAJourDeCotisation()) {
               membres.remove(membre);
+            }else {
+              membre.reinitialiserNbrVisites();
             }
           }
         );
         String arbresRemarquables = genererArbreRemarquables(mun);
-        rapportAnneePrec = genererRapportActivite(arbresRemarquables);
-    return rapportAnneePrec;
+        String rapport = genererRapportActivite(arbresRemarquables);
+        rapports.add(rapport);
+        this.transactions = new ArrayList<>();
+    return rapport;
   }
 
   public Transaction effectuerTransaction(
