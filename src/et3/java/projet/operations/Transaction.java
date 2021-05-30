@@ -14,8 +14,20 @@ public class Transaction {
     this.raison = raison;
   }
 
+  public float getMontant() {
+    return montant;
+  }
+
   public boolean estUneSortie() {
-    return montant < 0;
+    return getMontant() < 0;
+  }
+
+  public String getRaison() {
+    return raison;
+  }
+
+  public Long getPersonneId() {
+    return personneId;
   }
 
   @Override

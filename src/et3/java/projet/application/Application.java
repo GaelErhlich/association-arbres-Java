@@ -657,7 +657,7 @@ public class Application {
                     """
 
                             Tapez :
-                            > transaction : Déclarer une rentrée ou une sortie d'argent
+                            > transaction OU tran : Déclarer une rentrée ou une sortie d'argent
                             > donateur : Ajouter un donateur à la liste de l'association
                             > -donateur : Supprimer un donateur de la liste de l'association
                             > bilan : Afficher le bilan de l'exercice annuel, et possiblement le valider
@@ -670,6 +670,7 @@ public class Application {
 
 
 
+                case "tran":
                 case "transaction":
                     try {
 
@@ -690,12 +691,11 @@ public class Application {
 
                         System.out.println("Transaction effectuée avec succès :\n"
                                 + association.effectuerTransaction(id, montant, raison).toString() );
+                        System.out.println("\nComptes actuels de l'association pour l'année :\n"+association.getTransactionsStr());
 
-
-                        // TODO : Ajouter une ligne à la comptabilité de l'association
                     }
                     catch (NumberFormatException e) {
-                        System.out.println("Le format "+commande+" ne correspond pas au format de nombre attendu.");
+                        System.err.println("Le format de "+commande+" ne correspond pas au format de nombre attendu.");
                     }
                     break;
 

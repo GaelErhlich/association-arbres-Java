@@ -113,4 +113,23 @@ public class Association {
     transactions.add( transaction );
     return transaction;
   }
+
+
+  /**
+   * Construit la liste des transactions de l'association cette année, finie par le solde actuel de l'année.
+   * @return les comptes de l'association pour l'année
+   */
+  public String getTransactionsStr() {
+    StringBuilder stringBuilder = new StringBuilder();
+    long solde = 0;
+
+    for(Transaction transaction : transactions) {
+      solde += transaction.getMontant();
+      stringBuilder.append(transaction.toString()+"\n");
+    }
+    stringBuilder.append("Solde : "+solde+"€\n");
+
+    return stringBuilder.toString();
+  }
+
 }
