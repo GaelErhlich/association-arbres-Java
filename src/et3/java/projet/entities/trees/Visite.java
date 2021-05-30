@@ -6,6 +6,9 @@ import et3.java.projet.entities.trees.exceptions.VisiteDejaDefrayeeException;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Classe représentant une visite sur un arbre réel
+ */
 public class Visite {
 
   private static long idAcc = 0;

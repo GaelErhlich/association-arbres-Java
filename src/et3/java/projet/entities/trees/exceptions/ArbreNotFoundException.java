@@ -1,5 +1,8 @@
 package et3.java.projet.entities.trees.exceptions;
 
+/**
+ * Exception levée lorsqu'un ID ne correspond à aucun arbre
+ */
 public class ArbreNotFoundException extends Exception {
 
     public long id;

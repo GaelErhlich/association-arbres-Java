@@ -1,5 +1,8 @@
 package et3.java.projet.entities.persons;
 
+/**
+ * Représente une personne physique ou morale, avec un nom, une adresse, et un ID unique
+ */
 public class Personne {
 
   private static long idAcc = 0;

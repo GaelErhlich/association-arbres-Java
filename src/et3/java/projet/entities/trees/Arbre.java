@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Classe représentant un arbre de la base de données
+ */
 public class Arbre {
 
   private long id;

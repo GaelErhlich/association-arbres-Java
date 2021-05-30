@@ -1,7 +1,8 @@
 package et3.java.projet.operations;
 
-import et3.java.projet.entities.persons.Personne;
-
+/**
+ * Classe représentant une opération dans des comptes, avec une Personne source/destinataire, un montant, et une raison
+ */
 public class Transaction {
 
   private Long personneId;

@@ -13,6 +13,10 @@ import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
 import et3.java.projet.operations.Transaction;
 import java.util.ArrayList;
 
+
+/**
+ * Classe représentant une association d'amoureux des arbres (unique à l'heure actuelle)
+ */
 public class Association {
 
   private String nom = "Association d'amoureux des arbres générique";
