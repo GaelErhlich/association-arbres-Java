@@ -171,4 +171,8 @@ public class Membre extends Personne {
   public void reinitialiserArbresSouhaites() {
     this.arbresSouhaites = new Long[5];
   }
+
+  public void reinitialiserNbrVisites() {
+    this.visitesDefrayeesAnnuel = 0;
+  }
 }
