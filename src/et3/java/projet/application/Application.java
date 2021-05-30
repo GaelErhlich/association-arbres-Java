@@ -508,7 +508,6 @@ public class Application {
                         long id = Long.parseLong(commande);
                         Visite visite = association.getVisite(id);
                         System.out.println(visite.toString());
-                        // TODO : Donner des informations sur visite
                     }
 
                     catch (NumberFormatException e) {
@@ -574,8 +573,6 @@ public class Application {
                         System.out.println("Visite ajoutée :\n"
                                 +visite.toString() );
 
-                        // TODO : Programmer une visite
-
                     }
                     catch (ArbreNotFoundException e) {
                         System.err.println("Aucun arbre n'a été trouvé avec l'identifiant "+e.id+".");
@@ -602,7 +599,6 @@ public class Application {
                         visite.setCompteRendu(commande);
                         System.out.println("\nLe compte-rendu a bien été enregistré.\n"
                                 + visite.toString());
-                        // TODO : Ajouter un compte-rendu à une visite
                     }
 
                     catch (NumberFormatException e) {

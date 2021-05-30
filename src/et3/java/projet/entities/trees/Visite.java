@@ -51,7 +51,7 @@ public class Visite {
     return "Visite#"+id+
             "\n  Date : " + dateC.get(Calendar.DAY_OF_MONTH)+"/"+dateC.get(Calendar.MONTH)+"/"+dateC.get(Calendar.YEAR)+
                     " - "+dateC.get(Calendar.HOUR)+"h"+dateC.get(Calendar.MINUTE)+
-            "\n  Visiteur : " + visiteur +
+            "\n  Identifiant du visiteur : " + visiteur +
             "\n  Compte-rendu : " + ( compteRendu.length()==0 ? "Non-remis" : compteRendu) +
             "\n  Défrayé : " + (estDefrayee ? "Oui" : "Non") +
             '\n';

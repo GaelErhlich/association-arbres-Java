@@ -7,4 +7,10 @@ public class Transaction {
   private Personne personne;
   private float montant;
   private String raison;
+
+  public Transaction(Personne partie, float montant, String raison) {
+    this.personne = partie;
+    this.montant = montant;
+    this.raison = raison;
+  }
 }

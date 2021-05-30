@@ -10,20 +10,17 @@ import java.util.ArrayList;
 
 public class Association {
 
-  private String nom;
-  private String rapportAnneePrec;
-  private ArrayList<Transaction> transactions;
-  private ArrayList<Personne> donateurs;
-  private ArrayList<Membre> membres;
-  private ArrayList<Visite> visites;
-  private float argent;
-  private float prixCotisation;
+  private String nom = "Association d'amoureux des arbres générique";
+  private String rapportAnneePrec = "";
+  private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+  private ArrayList<Personne> donateurs = new ArrayList<Personne>();
+  private ArrayList<Membre> membres = new ArrayList<Membre>();
+  private ArrayList<Visite> visites = new ArrayList<Visite>();
+  private float argent = 0;
+  private float prixCotisation = 20;
 
   public Association() {
-    transactions = new ArrayList<Transaction>();
-    donateurs = new ArrayList<Personne>();
-    membres = new ArrayList<Membre>();
-    visites = new ArrayList<Visite>();
+
   }
 
   public void ajouterMembre(Membre membre) {
@@ -90,7 +87,7 @@ public class Association {
   /**
    * /!\ Ne pas appeler directement
    * Ajoute une visite à la liste contenant toutes les visites
-   * @param visite
+   * @param visite La visite qu'on veut ajouter à la liste
    */
   public void addVisiteListeComplete(Visite visite) {
     visites.add(visite);
@@ -102,5 +99,10 @@ public class Association {
       .filter(m -> m.getId() == id)
       .toArray()[0];
     membre = null;
+  }
+
+
+  public void effectuerTransaction(Personne partie, float montant, String raison) {
+    transactions.add(  new Transaction(partie, montant, raison) );
   }
 }
