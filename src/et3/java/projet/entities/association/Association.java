@@ -2,6 +2,8 @@ package et3.java.projet.entities.association;
 
 import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.Personne;
+import et3.java.projet.entities.persons.exceptions.DonateurDejaAjouteException;
+import et3.java.projet.entities.persons.exceptions.DonateurNotFoundException;
 import et3.java.projet.entities.persons.exceptions.MembreCotisationDejaPayeeException;
 import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Visite;
@@ -131,5 +133,62 @@ public class Association {
 
     return stringBuilder.toString();
   }
+
+
+
+  public Personne getDonateur(long id) throws DonateurNotFoundException {
+    // TODO : Obtenir un donateur à partir de son identifiant
+    Object[] donateursObj = donateurs.stream().filter(personne -> personne.getId() == id).toArray();
+
+    if(donateursObj.length == 0) {
+      throw new DonateurNotFoundException(id);
+    } else {
+      return (Personne) donateursObj[0];
+    }
+  }
+
+
+  public void ajouterDonateur(Personne personne) throws DonateurDejaAjouteException {
+    try {
+      Personne donateur = getDonateur(personne.getId());
+      throw new DonateurDejaAjouteException(personne, this); // Si on a pu trouver le donateur, alors on ne doit pas l'ajouter à nouveau.
+    }
+    catch (DonateurNotFoundException e) { // Si on ne l'a pas trouvé dans la liste, c'est que tout est normal.
+      donateurs.add(personne);
+    }
+    // TODO : Ajouter un donateur à la liste des donateurs
+  }
+
+  public void retirerDonateur(long id) throws DonateurNotFoundException {
+    Personne donateur = getDonateur(id);
+    donateurs.remove(donateur);
+    // TODO : Supprimer un donateur de la liste
+  }
+
+
+  public Personne[] getDonateurs() {
+    Object[] donateursObj = donateurs.toArray();
+    Personne[] donateursArr = new Personne[ donateursObj.length ];
+    for(int i=0; i<donateursObj.length; i++) {
+      donateursArr[i] = (Personne) donateursObj[i];
+    }
+
+    return donateursArr;
+    // TODO : liste des donateurs en tableau
+  }
+
+
+  public String getDonateursStr() {
+    // TODO : liste des donateurs version texte
+    StringBuilder stringBuilder = new StringBuilder();
+    Personne[] donateurs = getDonateurs();
+
+    for(Personne donateur : donateurs) {
+      stringBuilder.append(donateur.toString()+"\n");
+    }
+
+    return stringBuilder.toString();
+  }
+
 
 }

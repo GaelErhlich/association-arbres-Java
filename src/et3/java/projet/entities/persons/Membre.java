@@ -24,8 +24,7 @@ public class Membre extends Personne {
     short anneePremiereCotisation,
     short visitesAnneeCourante
   ) {
-    super(nomComplet);
-    this.adresse = adresse;
+    super(nomComplet, adresse);
     this.naissance = naissance;
     this.visitesAnneeCourante = visitesAnneeCourante;
     this.dateDerniereCotisation = dateDerniereCotisation;

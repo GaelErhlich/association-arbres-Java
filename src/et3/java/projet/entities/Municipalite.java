@@ -16,16 +16,17 @@ public class Municipalite extends Personne {
   private TreeMap<Long, Arbre> arbresRemarquables;
   private Map<Long, Arbre> arbres;
 
-  public Municipalite(String nom) {
-    super(nom);
+  public Municipalite(String nom, String adresse) {
+    super(nom, adresse);
     arbresRemarquables = new TreeMap<Long, Arbre>();
     arbres = new HashMap<Long, Arbre>();
   }
 
 
+  /*
   public boolean estArbreDansListeRemarquable(long id) { // TODO en construction
-    return Arrays.stream(getArbresRemarquables()).anyMatch(arbre -> arbre.getId() == id);
-  }
+    return Arrays.stream(getArbresRemarquables()).anyMatch(arbre -> arbre.getId() == id); // TODO Peut-être à supprimer en fait ?
+  }*/
 
 
   public Arbre getArbre(long id) throws ArbreNotFoundException {
