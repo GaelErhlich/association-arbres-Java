@@ -10,9 +10,7 @@ import et3.java.projet.entities.persons.exceptions.MembreCotisationDejaPayeeExce
 import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
-import et3.java.projet.entities.trees.exceptions.ArbreDejaRemarquableException;
-import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
-import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
+import et3.java.projet.entities.trees.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -516,7 +514,7 @@ public class Application {
                             > information OU info : Consulter les informations relatives à une visite
                             > programmer : Définir une visite
                             > rapport : Ajouter un compte-rendu à une visite
-                            > acquitter : Indiquer qu'un membre a été défrayé
+                            > acquitter OU défrayer : Indiquer qu'un membre a été défrayé
                             > retour : Retourner au menu principal"""
             );
             commande = scanner.nextLine();
@@ -637,8 +635,37 @@ public class Application {
 
 
 
+                case "défrayer":
                 case "acquitter":
-                    // TODO : Défrayer un membre
+                    System.out.println("Rappel : Le montant remboursé en défraiement est "+association.getPrixCotisation()+"€.");
+                    try {
+
+                        System.out.println("Indiquez l'identifiant de la visite dont le visiteur doit être défrayé :");
+                        commande = scanner.nextLine();
+                        long id = Long.parseLong(commande);
+
+                        association.defrayerVisite(id);
+
+                        // TODO : Défrayer un membre
+
+                    }
+                    catch (NumberFormatException e) {
+                        System.err.println("Un identifiant ne peut contenir que des chiffres.");
+                    }
+                    catch (VisiteNotFoundException e) {
+                        System.err.println("L'identifiant de visite "+e.id+" n'a pas pu être trouvé dans l'association.");
+                    }
+                    catch (VisiteDejaDefrayeeException e) {
+                        System.err.println("La visite suivante a déjà été défrayée :\n"
+                                +e.visite.toString() );
+                    }
+                    catch (MembreNotFoundException e) {
+                        System.err.println("Il semblerait que le membre d'identifiant "+e.id+" ne soit plus dans l'association."
+                                +"\nAucun remboursement n'aura donc lieu, car impossible de connaître son nombre de visites cette année.");
+                    }
+                    catch (MaxDefraiementsException e) {
+                        System.err.println(e.membre.getNomEtId()+" a déjà atteint son nombre maximal de défraiements cette année.");
+                    }
                     break;
 
 

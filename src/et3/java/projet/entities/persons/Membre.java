@@ -40,6 +40,13 @@ public class Membre extends Personne {
     return c.get(Calendar.YEAR) >= anneeCourante;
   }
 
+  public short getVisitesAnneeCourante() {
+    return visitesAnneeCourante;
+  }
+
+  public void incrementeVisitesAnneeCourante() {
+    this.visitesAnneeCourante++;
+  }
 
   /**
    * /!\ Ne pas appeler directement (passer par l'association)

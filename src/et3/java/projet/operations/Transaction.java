@@ -33,8 +33,8 @@ public class Transaction {
   @Override
   public String toString() {
     return "Transaction ("+ (estUneSortie() ? "Sortie" : "Entrée")+") {" +
-            "Personne n°" + personneId +
-            ", " + montant + "€" +
+            (personneId == null ? "" : "Personne n°"+personneId+",") +
+            "" + montant + "€" +
             ", Motif : '" + raison + '\'' +
             " }";
   }

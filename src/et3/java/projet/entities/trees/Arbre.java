@@ -86,6 +86,21 @@ public class Arbre {
     return 0;
   }
 
+  public boolean isDerniereVisitePassee() {
+    Calendar calendarDerniere = Calendar.getInstance();
+    calendarDerniere.setTimeInMillis( getDerniereVisite() );
+    Calendar calendarPresent = Calendar.getInstance();
+
+    return calendarPresent.after( calendarDerniere );
+  }
+
+
+  public void ajouterVisite(Visite visite, Association association) {
+    lVisites.add(visite);
+    association.addVisiteListeComplete(visite);
+  }
+
+
   public long getId() {
     return this.id;
   }
@@ -101,12 +116,6 @@ public class Arbre {
   }
 
 
-
-  public void ajouterVisite(Visite visite, Association association) {
-    lVisites.add(visite);
-    association.addVisiteListeComplete(visite);
-    // TODO Ajouter à la liste des visites de l'assoc
-  }
 
 
   @Override

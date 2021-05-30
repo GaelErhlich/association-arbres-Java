@@ -7,6 +7,8 @@ import et3.java.projet.entities.persons.exceptions.DonateurNotFoundException;
 import et3.java.projet.entities.persons.exceptions.MembreCotisationDejaPayeeException;
 import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Visite;
+import et3.java.projet.entities.trees.exceptions.MaxDefraiementsException;
+import et3.java.projet.entities.trees.exceptions.VisiteDejaDefrayeeException;
 import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
 import et3.java.projet.operations.Transaction;
 import java.util.ArrayList;
@@ -15,12 +17,14 @@ public class Association {
 
   private String nom = "Association d'amoureux des arbres générique";
   private String rapportAnneePrec = "";
-  private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-  private ArrayList<Personne> donateurs = new ArrayList<Personne>();
-  private ArrayList<Membre> membres = new ArrayList<Membre>();
-  private ArrayList<Visite> visites = new ArrayList<Visite>();
+  private ArrayList<Transaction> transactions = new ArrayList<>();
+  private ArrayList<Personne> donateurs = new ArrayList<>();
+  private ArrayList<Membre> membres = new ArrayList<>();
+  private ArrayList<Visite> visites = new ArrayList<>();
   private float argent = 0;
-  private float prixCotisation = 20;
+  private float prixCotisation = 20.00f;
+  private float prixDefraiement = 9.50f;
+  private short maxVisitesDefrayees = 2;
 
   public Association() {
 
@@ -69,7 +73,15 @@ public class Association {
   }
 
 
-  
+  public float getPrixDefraiement() {
+    return prixDefraiement;
+  }
+
+  public short getMaxVisitesDefrayees() {
+    return maxVisitesDefrayees;
+  }
+
+
   public String getMembresStr() {
     StringBuilder liste = new StringBuilder();
 
@@ -98,6 +110,23 @@ public class Association {
      }
   }
 
+
+  public void defrayerVisite(long id) throws VisiteNotFoundException, VisiteDejaDefrayeeException, MembreNotFoundException, MaxDefraiementsException {
+
+    Visite visite = getVisite(id);
+    visite.rendreDefraye();
+
+    Membre membre = getMembre( visite.getVisiteurId() );
+    if( membre.getVisitesAnneeCourante() == getMaxVisitesDefrayees() ) {
+      throw new MaxDefraiementsException(membre, this);
+    }
+
+    this.effectuerTransaction(visite.getVisiteurId(), getPrixDefraiement(), "Défraiement pour la visite "+visite.getId());
+
+  }
+
+
+
   /**
    * /!\ Ne pas appeler directement
    * Ajoute une visite à la liste contenant toutes les visites
@@ -106,6 +135,7 @@ public class Association {
   public void addVisiteListeComplete(Visite visite) {
     visites.add(visite);
   }
+
 
 
 
@@ -128,7 +158,7 @@ public class Association {
       solde += transaction.getMontant();
       stringBuilder.append(transaction.toString()).append("\n");
     }
-    stringBuilder.append("Solde : ").append(solde).append("€\n");
+    stringBuilder.append("Solde annuel : ").append(solde).append("€\n");
 
     return stringBuilder.toString();
   }
