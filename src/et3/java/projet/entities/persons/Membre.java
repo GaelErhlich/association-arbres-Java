@@ -1,16 +1,14 @@
 package et3.java.projet.entities.persons;
 
 import et3.java.projet.entities.Municipalite;
-import et3.java.projet.entities.trees.Arbre;
+import et3.java.projet.entities.association.Association;
+import et3.java.projet.entities.persons.exceptions.MembreCotisationDejaPayeeException;
 import et3.java.projet.entities.trees.exceptions.ArbreNotFoundException;
 
-import java.util.Arrays;
 import java.util.Calendar;
 
 public class Membre extends Personne {
 
-  private static long idAcc = 0;
-  private long id;
   private String adresse;
   private long naissance;
   private short visitesAnneeCourante;
@@ -32,13 +30,8 @@ public class Membre extends Personne {
     this.visitesAnneeCourante = visitesAnneeCourante;
     this.dateDerniereCotisation = dateDerniereCotisation;
     this.anneePremiereCotisation = anneePremiereCotisation;
-    this.id = idAcc;
-    Membre.idAcc += 1;
   }
 
-  public long getId() {
-    return this.id;
-  }
 
   public boolean estAJourDeCotisation() {
     Calendar c = Calendar.getInstance();
@@ -46,6 +39,21 @@ public class Membre extends Personne {
 
     c.setTimeInMillis(dateDerniereCotisation);
     return c.get(Calendar.YEAR) >= anneeCourante;
+  }
+
+
+  /**
+   * /!\ Ne pas appeler directement (passer par l'association)
+   * Définit la date de dernière cotisation du membre comme aujourd'hui.
+   * @param association l'association dont le membre est membre
+   * @throws MembreCotisationDejaPayeeException
+   */
+  public void validerCotisation(Association association) throws MembreCotisationDejaPayeeException {
+    if(estAJourDeCotisation()) {
+      throw new MembreCotisationDejaPayeeException(this, association);
+    }
+
+    dateDerniereCotisation = Calendar.getInstance().getTimeInMillis();
   }
 
 

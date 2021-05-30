@@ -38,7 +38,7 @@ public class Application {
                             > arbres : Ajouter et gérer les arbres
                             > membres : Ajouter et gérer les adhérents
                             > visites : Gérer les visites sur des arbres
-                            > comptabilité : Gérer les finances de l'association
+                            > comptable : Gérer les finances de l'association
                             > quitter : Fermer l'application"""
             );
             String commande = scanner.nextLine();
@@ -60,7 +60,7 @@ public class Application {
                     break;
 
 
-                case "comptabilité":
+                case "comptable":
                     startComptabiliteLoop();
                     break;
 
@@ -613,7 +613,7 @@ public class Application {
 
 
                 case "acquitter":
-                    // TODO : Ajouter un compte-rendu à une visite
+                    // TODO : Défrayer un membre
                     break;
 
 
@@ -657,7 +657,7 @@ public class Application {
                     """
 
                             Tapez :
-                            > transaction : Déclarer une rentrée ou une sortie d'argent
+                            > transaction OU tran : Déclarer une rentrée ou une sortie d'argent
                             > donateur : Ajouter un donateur à la liste de l'association
                             > -donateur : Supprimer un donateur de la liste de l'association
                             > bilan : Afficher le bilan de l'exercice annuel, et possiblement le valider
@@ -670,8 +670,33 @@ public class Application {
 
 
 
+                case "tran":
                 case "transaction":
-                    // TODO : Ajouter une ligne à la comptabilité de l'association
+                    try {
+
+                        System.out.println("Indiquez l'identifiant de la personne à qui est associée la transaction :"
+                                +"\n"+municipalite.getId()+" pour la municipalité"
+                                +"\n? pour aucun ou une personne sans identifiant"
+                                +"\nAttention ! L'identifiant ne sera pas vérifié.");
+                        commande = scanner.nextLine();
+                        Long id = commande.equals("?") ? null : Long.parseLong(commande);
+
+                        System.out.println("Indiquez le montant (en €) de la transaction :");
+                        commande = scanner.nextLine();
+                        float montant = Float.parseFloat(commande);
+
+                        System.out.println("Indiquez le motif de la transaction :");
+                        String raison = scanner.nextLine();
+
+
+                        System.out.println("Transaction effectuée avec succès :\n"
+                                + association.effectuerTransaction(id, montant, raison).toString() );
+                        System.out.println("\nComptes actuels de l'association pour l'année :\n"+association.getTransactionsStr());
+
+                    }
+                    catch (NumberFormatException e) {
+                        System.err.println("Le format de "+commande+" ne correspond pas au format de nombre attendu.");
+                    }
                     break;
 
 
@@ -732,7 +757,7 @@ public class Application {
     public void initialize(ArrayList<Arbre> arbres) {
 
         // Déclaration de la municipalité
-        municipalite = new Municipalite();
+        municipalite = new Municipalite("Région Île-de-France");
 
         // Ajout des arbres à la municipalité
         for(Arbre arbre : arbres) {

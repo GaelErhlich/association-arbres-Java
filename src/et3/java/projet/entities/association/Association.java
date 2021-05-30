@@ -3,6 +3,7 @@ package et3.java.projet.entities.association;
 import et3.java.projet.entities.association.exceptions.BilanTropTotException;
 import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.Personne;
+import et3.java.projet.entities.persons.exceptions.MembreCotisationDejaPayeeException;
 import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Visite;
 import et3.java.projet.entities.trees.exceptions.VisiteNotFoundException;
@@ -65,6 +66,11 @@ public class Association {
     membres.remove(membre);
   }
 
+  public void validerCotisation(Membre membre)
+    throws MembreCotisationDejaPayeeException {
+    membre.validerCotisation(this);
+  }
+
   public String getMembresStr() {
     StringBuilder liste = new StringBuilder();
 
@@ -111,7 +117,7 @@ public class Association {
     float montant,
     String raison
   ) {
-    transactions.add(new Transaction(partie, montant, raison));
+    transactions.add(new Transaction(partie.getId(), montant, raison));
   }
 
   public void effectuerBilan() throws BilanTropTotException {
@@ -125,7 +131,42 @@ public class Association {
         throw new BilanTropTotException(c);
       } else {
         dernierBilan = now;
+        membres.forEach(
+          membre -> {
+            if (!membre.estAJourDeCotisation()) {
+              membres.remove(membre);
+              membre = null;
+            }
+          }
+        );
       }
     }
+  }
+
+  public Transaction effectuerTransaction(
+    Long id,
+    float montant,
+    String raison
+  ) {
+    Transaction transaction = new Transaction(id, montant, raison);
+    transactions.add(transaction);
+    return transaction;
+  }
+
+  /**
+   * Construit la liste des transactions de l'association cette année, finie par le solde actuel de l'année.
+   * @return les comptes de l'association pour l'année
+   */
+  public String getTransactionsStr() {
+    StringBuilder stringBuilder = new StringBuilder();
+    long solde = 0;
+
+    for (Transaction transaction : transactions) {
+      solde += transaction.getMontant();
+      stringBuilder.append(transaction.toString() + "\n");
+    }
+    stringBuilder.append("Solde : " + solde + "€\n");
+
+    return stringBuilder.toString();
   }
 }
