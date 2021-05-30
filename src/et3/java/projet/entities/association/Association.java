@@ -58,8 +58,14 @@ public class Association {
   }
 
 
+  public float getPrixCotisation() {
+    return prixCotisation;
+  }
+
+
   public void validerCotisation(Membre membre) throws MembreCotisationDejaPayeeException {
     membre.validerCotisation(this);
+    this.effectuerTransaction(membre.getId(), this.getPrixCotisation(), "Paiement de cotisation");
   }
 
 
@@ -116,7 +122,7 @@ public class Association {
    */
   public String getTransactionsStr() {
     StringBuilder stringBuilder = new StringBuilder();
-    long solde = 0;
+    float solde = 0;
 
     for(Transaction transaction : transactions) {
       solde += transaction.getMontant();

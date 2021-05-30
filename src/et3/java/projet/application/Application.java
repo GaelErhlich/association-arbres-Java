@@ -6,6 +6,7 @@ import et3.java.projet.entities.persons.Membre;
 import et3.java.projet.entities.persons.Personne;
 import et3.java.projet.entities.persons.exceptions.DonateurDejaAjouteException;
 import et3.java.projet.entities.persons.exceptions.DonateurNotFoundException;
+import et3.java.projet.entities.persons.exceptions.MembreCotisationDejaPayeeException;
 import et3.java.projet.entities.persons.exceptions.MembreNotFoundException;
 import et3.java.projet.entities.trees.Arbre;
 import et3.java.projet.entities.trees.Visite;
@@ -380,7 +381,28 @@ public class Application {
 
 
                 case "cotisé":
-                    // TODO : Mettre à jour de cotisation
+                    try {
+
+                        System.out.println("Rappel : Le montant de la cotisation est "+association.getPrixCotisation()+"€.");
+                        System.out.println("Indiquez l'identifiant du membre ayant nouvellement payé sa cotisation :");
+                        commande = scanner.nextLine();
+                        long id = Long.parseLong(commande);
+                        Membre membre = association.getMembre(id);
+
+                        association.validerCotisation(membre);
+                        System.out.println(membre.getNomEtId()+" est maintenant à jour de cotisation. ("+association.getPrixCotisation()+"€)");
+
+                    }
+                    catch (NumberFormatException e) {
+                        System.err.println("L'identifiant spécifié "+commande+" est invalide. " +
+                                "Seuls des nombres peuvent être des identifiants.");
+                    }
+                    catch (MembreNotFoundException e) {
+                        System.err.println("Aucun membre n'a été trouvé avec l'identifiant "+e.id+".");
+                    }
+                    catch (MembreCotisationDejaPayeeException e) {
+                        System.err.println("Le membre "+e.membre.getNomEtId()+" est déjà à jour de cotisation.");
+                    }
                     break;
 
 
