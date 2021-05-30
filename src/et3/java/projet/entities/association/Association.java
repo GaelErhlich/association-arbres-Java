@@ -156,7 +156,6 @@ public class Association {
     catch (DonateurNotFoundException e) { // Si on ne l'a pas trouvé dans la liste, c'est que tout est normal.
       donateurs.add(personne);
     }
-    // TODO : Ajouter un donateur à la liste des donateurs
   }
 
   public void retirerDonateur(long id) throws DonateurNotFoundException {
@@ -174,12 +173,10 @@ public class Association {
     }
 
     return donateursArr;
-    // TODO : liste des donateurs en tableau
   }
 
 
   public String getDonateursStr() {
-    // TODO : liste des donateurs version texte
     StringBuilder stringBuilder = new StringBuilder();
     Personne[] donateurs = getDonateurs();
 

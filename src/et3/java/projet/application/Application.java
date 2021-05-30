@@ -707,7 +707,8 @@ public class Application {
 
 
                 case "donateurs":
-                    // TODO : Afficher la liste des donateurs
+                    System.out.println("Chargement de la liste des donateurs...\n");
+                    System.out.println("Liste des donateurs :\n"+association.getDonateursStr());
                     break;
 
 
@@ -726,9 +727,8 @@ public class Application {
 
                         Personne donateur = new Personne(nom, adresse);
                         association.ajouterDonateur(donateur);
-                        System.out.println("Nouveau donateur ajouté avec succès.");
-                        System.out.println("Donateurs actuels de l'association :\n"
-                                +association.getDonateursStr());
+                        System.out.println("Nouveau donateur ajouté avec succès :\n"
+                                +donateur.toString());
                     }
                     // Dans la pratique, cette exception ne peut pas se présenter
                     // puisque l'on crée une nouvelle personne à chaque fois.
@@ -737,7 +737,6 @@ public class Application {
                     catch (DonateurDejaAjouteException e) {
                         System.err.println("Ce donateur a déjà été ajouté à la liste.");
                     }
-                    // TODO : Ajouter un donateur à la liste
                     break;
 
 
