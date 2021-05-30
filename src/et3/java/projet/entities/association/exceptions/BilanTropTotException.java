@@ -9,7 +9,7 @@ public class BilanTropTotException extends Exception {
 
   public BilanTropTotException(Calendar c) {
     super(
-      "Le bilan est annuel et ne peut se faire qu'apres le " +
+      "Le bilan est annuel et ne peut se faire qu'a partir du " +
       c.get(Calendar.DAY_OF_MONTH) +
       "/" +
       c.get(Calendar.MONTH) +

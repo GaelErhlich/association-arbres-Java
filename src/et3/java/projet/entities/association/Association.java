@@ -324,11 +324,11 @@ public class Association {
       Date dernierBilanClone = (Date) dernierBilan.clone();
       c.setTime(dernierBilanClone);
       c.add(Calendar.YEAR, 1);
-      if (c.after(now)) {
+      if (!c.after(now)) {
         throw new BilanTropTotException(c);
       } 
     }
-    dernierBilan = now;
+    this.dernierBilan = now;
         membres.forEach(
           membre -> {
             if (!membre.estAJourDeCotisation()) {

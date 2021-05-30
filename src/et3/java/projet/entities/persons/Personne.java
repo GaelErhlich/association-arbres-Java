@@ -19,7 +19,7 @@ public class Personne {
     this.nomComplet = nomComplet;
     this.adresse = adresse;
     this.id = idAcc;
-    this.idAcc += 1;
+    Personne.idAcc += 1;
   }
 
   /**
@@ -43,7 +43,7 @@ public class Personne {
    * @return la String
    */
   public String getNomEtId() {
-    return this.getNomComplet()+"#"+this.getId();
+    return this.getNomComplet() + "#" + this.getId();
   }
 
   /**
@@ -60,10 +60,16 @@ public class Personne {
    */
   @Override
   public String toString() {
-    return "Personne#"+getId()+ " {" +
-            "Nom : " + nomComplet +
-            ", Adresse : '" + adresse + '\'' +
-            "}";
+    return (
+      "Personne#" +
+      getId() +
+      " {" +
+      "Nom : " +
+      nomComplet +
+      ", Adresse : '" +
+      adresse +
+      '\'' +
+      "}"
+    );
   }
-
 }

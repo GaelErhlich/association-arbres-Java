@@ -15,6 +15,7 @@ import et3.java.projet.entities.trees.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 
 
@@ -828,21 +829,22 @@ public class Application {
                 case "bilan":
                     try {
 						System.out.println(association.effectuerBilan(municipalite));
-					} catch (BilanTropTotException e) {
-						System.err.println(e.getMessage());
-						e.printStackTrace();
-					}
-                    if(association.getDonateurs().length > 0){
-                         System.out.println("Veuillez indiquer le montant de donation pour chaque donateur, si le donateur ne fait pas de don veuillez indiquer '0':");
-                         for(Personne donateur: association.getDonateurs()){
-                         System.out.print(donateur.getNomEtId()+ " :");
-                         Float montant = Float.parseFloat(scanner.nextLine());
-                             if(montant.intValue() != 0){
-                                association.effectuerTransaction(donateur.getId(),montant, "Don");
-                             }
+                        if(association.getDonateurs().length > 0){
+                            System.out.println("Veuillez indiquer le montant de donation pour chaque donateur, si le donateur ne fait pas de don veuillez indiquer '0':");
+                            for(Personne donateur: association.getDonateurs()){
+                                System.out.print(donateur.getNomEtId()+ " :");
+                                Float montant = Float.parseFloat(scanner.nextLine());
+                                if(montant.intValue() != 0){
+                                    association.effectuerTransaction(donateur.getId(),montant, "Don");
+                                }
+                            }
+                            System.out.println("L'ensemble des dons ont été enregistré.");
                         }
-                     System.out.println("L'ensemble des dons ont été enregistré.");
                     }
+                    catch (BilanTropTotException e) {
+                        System.err.println(e.getMessage());
+                    }
+
                     break;
 
 
@@ -889,7 +891,15 @@ public class Application {
         // Association
         association = new Association();
 
-
+        // try {
+		// 	association.ajouterDonateur(new Personne("Lucas Dupont", "3 rue du boulevard"));
+        //     association.ajouterDonateur(new Personne("Mathieu Dupont", "2 rue du boulevard"));
+		// } catch (DonateurDejaAjouteException e) {
+        //     System.out.println(e.getMessage());
+		// }
+        // Date now = new Date();
+        // association.ajouterMembre(new Membre("Alex Durand", now.getTime(),"5 rue du boulevard", now.getTime(),(short) 2021, (short)0));
+        // association.ajouterMembre(new Membre("Nicolas Dupont", now.getTime(),"8 rue du boulevard", now.getTime(),(short) 2021, (short)0));
 
         // Starting the application
         startMainLoop();
