@@ -281,7 +281,7 @@ public class Association {
 
     votes.keySet().removeIf(arbre -> {
 		try {
-			return mun.estCoupé(arbre) || mun.getArbre(arbre).estRemarquable();
+			return mun.estCoupe(arbre) || mun.getArbre(arbre).estRemarquable();
 		} catch (ArbreNotFoundException e1) {
       e1.printStackTrace();
       return false;

@@ -135,7 +135,7 @@ public class Municipalite extends Personne {
    * @param arbre l'arbre à chercher
    * @return true si l'arbre est absent, false s'il est présent
    */
-  public boolean estCoupé(Long arbre) {
+  public boolean estCoupe(Long arbre) {
     return !this.arbres.containsKey(arbre);
   }
 }
